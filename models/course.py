@@ -5,6 +5,6 @@ from playhouse.hybrid import hybrid_property
 import re
 from flask_login import UserMixin
 
-class Classroom(BaseModel):
+class Course(BaseModel):
     title = pw.CharField(unique=True, null=False)
     teacher = pw.ForeignKeyField(User, on_delete='CASCADE')

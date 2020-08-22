@@ -3,7 +3,7 @@ from models.user import User
 import peewee as pw
 from werkzeug.security import check_password_hash
 from flask_login import login_user, logout_user, login_required
-from next_learning_web.util.google_oauth import oauth
+# from next_learning_web.util.google_oauth import oauth
 
 sessions_blueprint = Blueprint('sessions',
                             __name__,
