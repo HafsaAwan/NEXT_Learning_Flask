@@ -1,3 +1,5 @@
 <h3>User Profile</h3>
 
 <h2>Welcome {{current_user.username}}</h2>
+<img src="{{ user.full_image_path }}" />
+<a class="nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Settings</a>

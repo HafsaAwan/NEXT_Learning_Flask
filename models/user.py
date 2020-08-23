@@ -12,8 +12,17 @@ class User(UserMixin, BaseModel):
     email = pw.CharField(unique=True)
     password_hash = pw.TextField(null=False)
     password = None
-    profile_image = pw.TextField(null=True)
+    image_path = pw.TextField(null=True)
     role = pw.ForeignKeyField(Role, on_delete='CASCADE')
+
+    @hybrid_property
+    def full_image_path(self):
+        if self.image_path:
+            from app import app
+            return app.config.get("S3_LOCATION") + self.image_path
+        else:
+            from app import app
+            return app.config.get("S3_LOCATION") + "default-avatar.png"
 
     def validate(self):
         # Email should be unique
