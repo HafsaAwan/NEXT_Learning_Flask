@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
+from models.role import Role
 import peewee as pw
 from werkzeug.security import check_password_hash
 from flask_login import login_user, logout_user, login_required
-# from next_learning_web.util.google_oauth import oauth
+
+from next_learning_web.util.google_oauth import oauth
 
 sessions_blueprint = Blueprint('sessions',
                             __name__,
@@ -28,8 +30,11 @@ def create():
         if result:
             # session["user_id"] = user.id
             flash("Successfuly Signed In!", "success")
+
+
             # save user id in browser session
             login_user(user)
+
             return redirect(url_for("users.show", username=user.username))  # then redirect to profile page
         else:
             flash("Password incorrect. Please try again","danger")
