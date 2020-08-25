@@ -7,6 +7,7 @@ import re
 from flask_login import UserMixin
 
 class Assignment(BaseModel):
-    title = pw.CharField(unique=True, null=False)
+    title = pw.TextField(unique=True, null=False)
     course = pw.ForeignKeyField(StudentCourse, on_delete='CASCADE')
     file_path = pw.TextField(null=True)
+    grade = pw.CharField(unique=True, null=True)

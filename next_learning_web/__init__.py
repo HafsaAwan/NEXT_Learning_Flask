@@ -7,9 +7,12 @@ from next_learning_web.blueprints.courses.views import courses_blueprint
 
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
+from next_learning_web.util.google_oauth import oauth
 
 assets = Environment(app)
 assets.register(bundles)
+
+oauth.init_app(app)
 
 app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(sessions_blueprint, url_prefix="/sessions")

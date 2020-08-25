@@ -1,30 +1,28 @@
 
-    $(document).ready(function(){
-        $('.login-info-box').fadeOut();
-        $('.login-show').addClass('show-log-panel');
+$(document).ready(function(){
+    
 
-        $('.login-reg-panel input[type="radio"]').on('change', function() {
-            if($('#log-login-show').is(':checked')) {
-                $('.register-info-box').fadeOut(); 
-                $('.login-info-box').fadeIn();
-                
-                $('.white-panel').addClass('right-log');
-                $('.register-show').addClass('show-log-panel');
-                $('.login-show').removeClass('show-log-panel');
-                
-            }
-            else if($('#log-reg-show').is(':checked')) {
-                $('.register-info-box').fadeIn();
-                $('.login-info-box').fadeOut();
-                
-                $('.white-panel').removeClass('right-log');
-                
-                $('.login-show').addClass('show-log-panel');
-                $('.register-show').removeClass('show-log-panel');
-            }
+    "use strict";
+
+    var fullHeight = function() {
+
+        $('.js-fullheight').css('height', $(window).height());
+        $(window).resize(function(){
+            $('.js-fullheight').css('height', $(window).height());
         });
 
+    };
+    fullHeight();
+
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
     });
+    
+    
+
+    
+
+});
     
     
     
