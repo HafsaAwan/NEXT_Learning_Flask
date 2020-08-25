@@ -5,8 +5,30 @@
 {% endblock %}
 
 {% block header %}
+<style>
+  body  {
+      background-image: url('https://images.unsplash.com/photo-1558346648-9757f2fa4474?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
+      background-attachment:fixed;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      font-family: 'Russo One';
+      padding: 0%;
+    }
+    </style>
 {% endblock %}
 
 {% block content %}
-  <h1>Homepage</h1>
+<div class="jumbotron">
+  <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80" alt="Books">
+  <div class="image-text">Breaking Boundaries In Virtual Education</div>
+  <!-- Button style is hardcoded somewhere -->
+  <button id="homepage-button" class="w3-button w3-yellow w3-border">Learn More</button>
+</div>
+
+<div class="grid-container">
+  <div class="item2"><img src="https://image.flaticon.com/icons/svg/2883/2883939.svg" alt="Books"><h3>Certified Teachers</h3><h7>Our educators are globally certified professionals in supporting the academic achievement of our students. Every Next Learning educators must be certified to teach in our school.</h7></div>
+  <div class="Item2"><img src="https://image.flaticon.com/icons/svg/524/524569.svg" alt="Books"><h3>Special Education</h3><h7>Next Learning is tailored to meet the needs of students with disabilities. The services and supports one child receives may be very different from what another child receives. It’s all about individualization.</h7></div>
+  <div class="Item3"><img src="https://image.flaticon.com/icons/svg/3100/3100752.svg" alt="Books"><h3>Book & Library</h3><h7>Online rescources are readily accessible for our students that are seeking for useful information in enriching their educational experience.</h7></div>
+  <div class="Item4"><img src="https://image.flaticon.com/icons/svg/3329/3329494.svg" alt="Books"><h3>Personal Guidance</h3><h7>We aim in helping the children to get along with others and to develop certain social qualities. At this stage opportunities or facilities are given to pupils for their self expression.</h7></div>
+
 {% endblock %}
