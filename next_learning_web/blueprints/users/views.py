@@ -19,10 +19,12 @@ def new():
 def create():
     params = request.form
     print(params.get("role"))
+    
     new_user = User(username=params.get("username"), email=params.get("email"), password=params.get("password"), role = params.get("role"))
-  
+    
     if new_user.save():
         flash("Successfully Signed Up!","success")
+        login_user(new_user)
         return redirect(url_for("users.show", username=new_user.username))  # then redirect to profile page
     else:
         flash(new_user.errors, "danger")
