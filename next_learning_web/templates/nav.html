@@ -1,19 +1,21 @@
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="{{ url_for('home') }}">Next LEARNING</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" style='width:150px; box-sizing: border-box;'  href="{{ url_for('home') }}"><img src="https://imgur.com/76rr2Qa.png" alt="" width="100%" height="100%"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     
+    <!-- Requires centering in the navbar -->
+    <div class="container-fluid-nav" style= "margin:auto;">Remote Learning Taken Further</div>
+
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
         <li class="nav-item">
-            <a class="nav-link btn btn-dark" href="{{ url_for('home')}}">Home</a>
+            <a class="btn btn-outline-secondary" href="{{ url_for('home')}}">Home</a>
         </li>
 
-        
+
     
         </ul>
         
     </div>
-    </nav>
+</nav>
