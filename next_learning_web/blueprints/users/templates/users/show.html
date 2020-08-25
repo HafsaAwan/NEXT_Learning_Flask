@@ -41,12 +41,12 @@
             <div class="col-sm-2 sidenav">
                 <div class="img bg-wrap text-center py-4" style="background-image: url(images/bg_1.jpg);">
                     <div class="user-logo">
-                        <div class="img" style="background-image: url(../../../../static/images/profile_icon.png);"></div>
+                        <div class="img" style="background-image: url({{ current_user.full_image_path }});"></div>
                         <h3>{{current_user.username}}</h3>
                     </div>
                 </div>
                 <nav class="nav nav-pills nav-fill flex-column mt-2">
-                    <a class="nav-item nav-link" href="#">Edit Profile</a>
+                    <a class="nav-item nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit Profile</a>
                     {% if current_user.role.role == "teacher" %}
                         <a class="nav-item nav-link " href="{{url_for('courses.show')}}">Courses</a>
                         <a class="nav-item nav-link " href="{{url_for('courses.new')}}">Create a course</a>
@@ -110,3 +110,4 @@
     </footer>
 
 {% endblock %}
+

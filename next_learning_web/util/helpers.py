@@ -1,7 +1,6 @@
 import boto3, botocore
 from app import app
 
-
 s3 = boto3.client(
    "s3",
    aws_access_key_id=app.config["S3_KEY"],
@@ -19,8 +18,11 @@ def upload_file_to_s3(file, username, acl="public-read"):
                 "ContentType": file.content_type
             }
         )
+
     except Exception as e:
         # This is a catch all exception, edit this part to fit your needs.
         print("Something Happened: ", e)
         return e
+
     return "{}/{}".format(username, file.filename)
+
