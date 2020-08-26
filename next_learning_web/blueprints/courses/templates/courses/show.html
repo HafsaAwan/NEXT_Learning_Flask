@@ -70,8 +70,9 @@
                 <nav class="nav nav-pills nav-fill flex-column mt-2">
                     <a class="nav-item nav-link" href="#">List of students</a>
                     {% if current_user.role.role == "teacher" %}
-                        <a class="nav-item nav-link " href="{{url_for('courses.show')}}">Add students</a>
-                        <a class="nav-item nav-link " href="{{url_for('courses.new')}}">Upload Assignment</a>
+                        <a class="nav-item nav-link " href="{{url_for('courses.register')}}">Add students</a>
+                        <a class="nav-item nav-link " href="{{url_for('assignments.new')}}">Upload Assignment</a>
+                        <a class="nav-item nav-link " href="#">Video Call</a>
                     {% endif %}
                     
                     {% if current_user.role.role == "student" %}
@@ -95,7 +96,7 @@
             </div>
             <div class="col-sm-8 text-left"> 
                 <h1>Welcome</h1>
-                <h4>Course page</h4>
+                <h4>{{course_title}}</h4>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 <hr>
                 <!-- FORUM -->
