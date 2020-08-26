@@ -1,8 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.user import User
 from models.course import Course
+from models.student_course import StudentCourse
+from models.assignment import Assignment
 import peewee as pw
+import re
 from flask_login import login_user, logout_user, login_required, current_user
+from next_learning_web.util.helpers import upload_file_to_s3
+from werkzeug import secure_filename
 
 
 courses_blueprint = Blueprint('courses',
@@ -15,19 +20,50 @@ def new():
 
 @courses_blueprint.route('/', methods=['POST'])
 def create():
-    teacher = User.get_or_none(User.id == current_user.id)
-    print(teacher.id)
-    title = request.form.get("course_name")
-    new_course = Course(title = title, teacher = teacher.id)
-    if new_course.save():
-        flash("Successfully created the course!","success")
+    params = request.form
 
-        return redirect(url_for("courses.show"))  
+    new_course = Course(title=params.get("course_title"), teacher_id=current_user.id)
+
+    if new_course.save():
+        flash("Successfully Created a Course!","success")
+        return redirect(url_for("users.show", username=current_user.username))  # then redirect to profile page
     else:
         flash(new_course.errors, "danger")
         return redirect(url_for("courses.new"))
 
+@courses_blueprint.route('/<course_title>', methods=['GET'])
+def show(course_title):
+    return render_template('courses/show.html',course_title=course_title)
 
-@courses_blueprint.route('/', methods=['GET'])
-def show():
-    return render_template("courses/show.html")
+@courses_blueprint.route('/register', methods=['GET'])
+def register():
+    courses = []
+
+    for course in Course.select().where(Course.teacher_id == current_user.id):
+        print(course)
+        courses.append(course)
+    
+    return render_template('courses/register.html', courses=courses)
+
+@courses_blueprint.route('/enroll', methods=['POST'])
+def enroll():
+    params = request.form
+
+    username = params.get("username")
+    course = params.get("course")
+
+    student = User.get_or_none(User.username == username)
+    course = Course.get_or_none(Course.id == course)
+    print(student)
+    print(course)
+
+    if student and course:
+        new_student_course = StudentCourse(student_id=student.id, course_name_id=course.id)
+
+        new_student_course.save()
+        flash("Successfully enrolled a student!", "success")
+        return redirect(url_for("users.show", username=current_user.username))
+    else:
+        flash("Failed to enroll student!", "danger")
+        return redirect(url_for("courses.register"))
+    

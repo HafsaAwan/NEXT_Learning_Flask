@@ -8,8 +8,10 @@ from flask_login import UserMixin
 
 
 class User(UserMixin, BaseModel):
-    username = pw.CharField(unique=False, null=False)
-    email = pw.CharField(unique=True)
+    first_name = pw.CharField(null=False)
+    last_name = pw.CharField(null=False)
+    username = pw.CharField(unique=True, null=False)
+    email = pw.CharField(unique=True, null=False)
     password_hash = pw.TextField(null=False)
     password = None
     image_path = pw.TextField(null=True)

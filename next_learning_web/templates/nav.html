@@ -4,18 +4,29 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     
-    <!-- Requires centering in the navbar -->
     <div class="container-fluid-nav" style= "margin:auto;">Remote Learning Taken Further</div>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-        <li class="nav-item">
-            <a class="btn btn-outline-secondary" href="{{ url_for('home')}}">Home</a>
-        </li>
-
-
-    
+            <li class="nav-item">
+            <!-- User Profile image, rounded, link to edit profile  -->
+                <div class="nav-item">
+                    <a class="nav-item nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">
+                        <div class="img" href="url({{ current_user.full_image_path }});" img style="height:50px; border-radius:50%; border:1px solid #b1b6bd; padding:6px;"></div>
+                    </a>    
+                </div>
+            </li>
+            <!-- Display user name, link to edit profile -->
+            <li>
+                <div class="nav-item">
+                    <a class="nav-item nav-link" href="{{ url_for('users.show',username=current_user.username) }}">
+                        <h3 style="font-size:16px;margin:5px;margin-left: 0;padding:6px 12px;padding-left: 5px;">{{current_user.username}}</h3>
+                    </a>
+                </div>    
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-outline-secondary" href="{{ url_for('home')}}" style="margin:5px;">Home</a>
+            </li>
         </ul>
-        
     </div>
 </nav>

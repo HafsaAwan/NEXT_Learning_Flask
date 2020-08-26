@@ -1,0 +1,57 @@
+{% extends "_layout.html" %}
+{% block content %}
+
+
+    {% if current_user.role_id == 2 %}
+        <div class="my-login-page" style="margin-top: 50px;">
+            <section class="h-100">
+                <div class="container h-100">
+                    <div class="row justify-content-md-center h-100">
+                        <div class="card-wrapper">
+                            <div class="card fat">
+                                <div class="card-body">
+
+                                    <h4 class="card-title">Enroll A Student</h4>
+
+                                    <form action = "{{ url_for('courses.enroll', courses=courses) }}" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                                        <div class="form-group">
+                                            <label for="username">Username:</label>
+                                            <input type="text" name ="username" class="form-control" required/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="sel1">Choose Course:</label>
+                                            <select class="form-control" name="course">
+                                                {% for course in courses %}
+                                                    <option value="{{ course.id }}">{{course.title}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group m-0">
+                                            <button type="submit" class="btn btn-primary btn-block">
+                                                Submit
+                                            </button>
+                                        </div>
+
+                                        <div class="mt-4 text-center">
+											Add a new course? <a href="{{ url_for('courses.new') }}">Click Here!</a>
+										</div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    {% else %}
+		<h3 align="center">You are not allowed to enroll student into a course!</h3>
+
+	{% endif %}
+
+{% endblock %}

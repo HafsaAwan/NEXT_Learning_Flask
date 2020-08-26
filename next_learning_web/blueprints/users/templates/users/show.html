@@ -48,12 +48,11 @@
                 <nav class="nav nav-pills nav-fill flex-column mt-2">
                     <a class="nav-item nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit Profile</a>
                     {% if current_user.role.role == "teacher" %}
-                        <a class="nav-item nav-link " href="{{url_for('courses.show')}}">Courses</a>
+                        <a class="nav-item nav-link " href="#">Courses</a>
                         <a class="nav-item nav-link " href="{{url_for('courses.new')}}">Create a course</a>
                     {% endif %}
                     
                     {% if current_user.role.role == "student" %}
-                        <a class="nav-item nav-link " href="#">My Courses</a>
 
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
@@ -74,9 +73,34 @@
                 </nav>
             </div>
             <div class="col-sm-8 text-left"> 
-                <h1>Welcome</h1>
+                <h1>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h1>
                 <h4>Role: {{current_user.role.role}}</h4>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                {% if current_user.role_id == 2 %}
+                    <div>
+                        <a href="{{ url_for('courses.new') }}">Add a course</a>
+                    </div>
+
+                    <h3>All Courses : </h3>
+
+                    {% for course in teacher_courses %}
+                        <li>
+                            <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                            
+                        </li>
+                    {% endfor %}
+
+                {% else %}
+                    <h3>All Courses : </h3>
+
+                    {% for course in student_courses %}
+                        <li>
+                            <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                        </li>
+                    {% endfor %}
+
+                    <a class="nav-link" href="{{ url_for('assignments.box') }}">Submitted Assignments</a>
+                    
+                {% endif %}
                 <hr>
                 <h3>Test</h3>
                 <p>Lorem ipsum...</p>
@@ -84,7 +108,7 @@
             <div class="col-sm-2 sidenav">
                 <div class="well card">
                     <div class="card-body">
-                        <h5><u>Upcoming Events</u></h5>
+                        <h5>Upcoming Events</h5>
                          
                         <p>No new events</p>
                         <p></p>
@@ -93,7 +117,7 @@
                 </div>
                 <div class="well card">
                     <div class="card-body">
-                        <h5><u>Reminders</u></h5>
+                        <h5>Reminders</h5>
                         
                         <p>Set a reminder</p>
                         <p></p>
