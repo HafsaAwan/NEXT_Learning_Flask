@@ -7,4 +7,4 @@ import re
 from flask_login import UserMixin
 
 class Thread(BaseModel):
-    course = pw.ForeignKeyField(Course, on_delete='CASCADE')
+    course = pw.ForeignKeyField(Course, backref="thread" ,on_delete='CASCADE')
