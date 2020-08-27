@@ -7,6 +7,5 @@ import re
 from flask_login import UserMixin
 
 class Post(BaseModel):
-    title = pw.CharField(null=False)
-    content = pw.CharField(null=False)
+    post_content = pw.TextField(null=False)
     thread = pw.ForeignKeyField(Thread, on_delete='CASCADE')

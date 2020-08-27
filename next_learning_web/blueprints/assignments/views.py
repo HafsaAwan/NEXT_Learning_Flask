@@ -24,6 +24,7 @@ def create():
 
 @assignments_blueprint.route('/<course_id>/<id>/upload', methods=['POST'])
 def upload(id, course_id):
+    print("assignment upload")
     user = User.get_or_none(User.id == id)
 
     params = request.form

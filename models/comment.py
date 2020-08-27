@@ -7,5 +7,5 @@ import re
 from flask_login import UserMixin
 
 class Comment(BaseModel):
-    content = pw.CharField(null=False)
-    post = pw.ForeignKeyField(Post, on_delete='CASCADE')
+    content = pw.TextField(null=False)
+    post = pw.ForeignKeyField(Post, backref="comments", on_delete='CASCADE')
