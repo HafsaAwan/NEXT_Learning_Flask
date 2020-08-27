@@ -7,7 +7,7 @@ bundles = {
         'js/vendor/popper.js',
         'js/vendor/bootstrap-4.1.3.js',
         'js/bootstrap.min.js',
-        'js/jquery.min.js',
+        # 'js/jquery.min.js',
         'js/custom.js',        
  
         filters='jsmin',
@@ -16,6 +16,7 @@ bundles = {
     'home_css': Bundle(
         'css/vendor/bootstrap-4.1.3.css',
         'css/custom.css',
+        'css/style.css',
         filters='cssmin',
         output='gen/home.%(version)s.css'),
 

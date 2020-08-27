@@ -40,6 +40,13 @@ def create():
 @courses_blueprint.route('/<course_title>', methods=['GET'])
 def show(course_title):
     current_course = Course.get_or_none(Course.title == course_title)
+    students = []
+
+    for info in StudentCourse.select().join(Course).where(Course.title == course_title):
+        for student in User.select().where(User.id == info.student_id):
+            students.append(student)
+
+    # return render_template('courses/show.html', course_title=course_title, students=students)
 
     for thread in current_course.thread:
         course_thread = thread
@@ -51,7 +58,7 @@ def show(course_title):
 
     course_posts.reverse()
     
-    return render_template('courses/show.html', course_title=course_title, course_posts=course_posts)
+    return render_template('courses/show.html', course_title=course_title,students=students, course_posts=course_posts)
     # return render_template('courses/show.html',course_title=course_title)
 
 
