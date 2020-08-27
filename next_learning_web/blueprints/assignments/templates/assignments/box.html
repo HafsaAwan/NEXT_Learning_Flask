@@ -1,13 +1,179 @@
 {% extends "_layout.html" %}
+{% block header%}
+    <style>
+        body {
+            background-color: #eeeeee;
+        }
 
+        .h7 {
+            font-size: 0.8rem;
+        }
+
+        .gedf-wrapper {
+            margin-top: 0.97rem;
+        }
+
+        @media (min-width: 992px) {
+            .gedf-main {
+                padding-left: 4rem;
+                padding-right: 4rem;
+            }
+            .gedf-card {
+                margin-bottom: 2.77rem;
+            }
+        }
+
+        /**Reset Bootstrap*/
+        .dropdown-toggle::after {
+            content: none;
+            display: none;
+        }
+        /* Remove the navbar's default margin-bottom and rounded borders */ 
+        .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+        }
+        
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {height: 100vh}
+        
+        /* Set gray background color and 100% height */
+        .sidenav {
+        padding-top: 20px;
+        background-color: #f1f1f1;
+        height: 100%;
+        }
+        
+        /* Set black background color, white text and some padding */
+        footer {
+        background-color: #555;
+        color: white;
+        padding: 15px;
+        }
+        
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+        .sidenav {
+            height: auto;
+            padding: 15px;
+        }
+        .row.content {height:auto;} 
+        }
+    </style>
+{% endblock %}
 {% block content %}
+			
+    <div class="container-fluid text-center">    
+        <div class="row content">
+            <div class="col-sm-2 sidenav">
+                
+                <nav class="nav nav-pills nav-fill flex-column mt-2">
 
-<ul>
-    {% for assignment in assignments %}
-        <li>
-            <a href="{{assignment.full_file_path}}">{{assignment.title}}</a>
-        </li>
-    {% endfor %}
-</ul>
+                    
+
+                    {% if current_user.role.role == "teacher" %}
+                        <a class="nav-item nav-link " href="{{url_for('courses.register')}}">Add students</a>
+                        <a class="nav-item nav-link " href="{{url_for('assignments.new')}}">Upload Assignment</a>
+                        <a class="nav-item nav-link " href="#">Video Call</a>
+                    {% endif %}
+                    
+                    {% if current_user.role.role == "student" %}
+                        
+                        
+                        <a class="nav-item nav-link " href="#">My Grades</a>
+
+                    {% endif %}
+
+                    {% if current_user.role.role == "guardian" %}
+                        <a class="nav-item nav-link " href="#">View Progress Report</a>
+
+                    {% endif %}
+                    
+
+                    <form action="{{url_for('sessions.destroy')}}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="submit" class="btn " value="Logout">
+                    </form>
+                </nav>
+            </div>
+            <div class="col-sm-8 text-left"> 
+                <h1>Welcome</h1>
+                <h2>{{course.title}}</h2>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                    Upload Assignment
+                </button>
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Upload</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action = "{{ url_for('assignments.upload', id=current_user.id, course_id=course.id) }}" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <div class="form-group">
+                                    <label for="title">Title:</label>
+                                    <input type="text" name ="title" class="form-control" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="assignment">Choose assignment:</label>
+                                    <input type="file" class="form-control-file" name="assignment">
+                                  </div>
+                                  <hr/>
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Upload</button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                
+                    </div>
+                </div>
+                </div>
+                
+                <ul>
+                    {% for assignment in assignments %}
+                        <li>
+                            <a href="{{assignment.full_file_path}}">{{assignment.title}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                
+                 
+            </div>
+            <!-- sidebar -->
+            <div class="col-sm-2 sidenav">
+                <div class="well card">
+                    <div class="card-body">
+                        <h5><u>Upcoming Events</u></h5>
+                         
+                        <p>No new events</p>
+                        <p></p>
+                    </div>
+                    
+                </div>
+                <div class="well card">
+                    <div class="card-body">
+                        <h5><u>Reminders</u></h5>
+                        
+                        <p>Set a reminder</p>
+                        <p></p>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <footer class="container-fluid text-center">
+        <p>Footer Text</p>
+    </footer>
 
 {% endblock %}

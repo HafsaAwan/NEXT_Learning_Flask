@@ -84,7 +84,7 @@
 
                     {% for course in teacher_courses %}
                         <li>
-                            <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                            <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
                             
                         </li>
                     {% endfor %}
@@ -98,7 +98,7 @@
                         </li>
                     {% endfor %}
 
-                    <a class="nav-link" href="{{ url_for('assignments.box') }}">Submitted Assignments</a>
+                    
                     
                 {% endif %}
                 <hr>

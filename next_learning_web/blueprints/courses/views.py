@@ -33,7 +33,13 @@ def create():
 
 @courses_blueprint.route('/<course_title>', methods=['GET'])
 def show(course_title):
-    return render_template('courses/show.html',course_title=course_title)
+    students = []
+
+    for info in StudentCourse.select().join(Course).where(Course.title == course_title):
+        for student in User.select().where(User.id == info.student_id):
+            students.append(student)
+
+    return render_template('courses/show.html', course_title=course_title, students=students)
 
 @courses_blueprint.route('/register', methods=['GET'])
 def register():

@@ -14,16 +14,16 @@ assignments_blueprint = Blueprint('assignments',
                             __name__,
                             template_folder='templates')
 
-@assignments_blueprint.route('/new', methods=['GET'])
+@assignments_blueprint.route('/<course_id>/new', methods=['GET'])
 def new():
-    return render_template('assignments/new.html')
+    pass
 
 @assignments_blueprint.route('/', methods=['POST'])
 def create():
     pass
 
-@assignments_blueprint.route('/<id>/upload', methods=['POST'])
-def upload(id):
+@assignments_blueprint.route('/<course_id>/<id>/upload', methods=['POST'])
+def upload(id, course_id):
     user = User.get_or_none(User.id == id)
 
     params = request.form
@@ -31,7 +31,7 @@ def upload(id):
     title = params.get("title")
 
     # Currently only for students, not yet teachers
-    info = StudentCourse.get_or_none(StudentCourse.student_id == id)
+    info = StudentCourse.get_or_none(StudentCourse.student_id == id, StudentCourse.course_name_id == course_id)
     print(info)
     
     if info:
@@ -67,13 +67,16 @@ def upload(id):
         flash("Failed to upload!", "danger")
         return redirect(url_for('home'))
 
-@assignments_blueprint.route('/submissions', methods=['GET'])
-def box():
-    info = StudentCourse.get_or_none(StudentCourse.student_id == current_user.id)
+@assignments_blueprint.route('/<course_title>/submissions', methods=['GET'])
+def box(course_title):
+    course = Course.get_or_none(Course.title == course_title)
+
+    # Ask how to get two things from a table using only one get_or_none
+    info = StudentCourse.get_or_none(StudentCourse.student_id == current_user.id, StudentCourse.course_name_id == course.id)
 
     assignments = []
 
     for assignment in Assignment.select().where(Assignment.info_id == info.id):
         assignments.append(assignment)
 
-    return render_template('assignments/box.html', assignments=assignments)
+    return render_template('assignments/box.html', assignments=assignments, course=course)
