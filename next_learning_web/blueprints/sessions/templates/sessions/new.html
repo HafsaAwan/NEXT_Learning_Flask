@@ -92,7 +92,7 @@
 							<form action = "{{ url_for('sessions.google_login') }}" method="GET">
 								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 						
-								<div class="form-group justify-content-center">
+								<div class="form-group justify-content-center" align="center">
 									<input type="image" name="imgbtn" src="/static/images/btn_google_signin_light_normal_web2x.png"  alt="Login with Google" style="width: 90%;">
 								</div>
 							</form>

@@ -71,20 +71,20 @@
 
                     
 
-                    {% if current_user.role.role == "teacher" %}
+                    {% if current_user.role.role == "Teacher" %}
                         <a class="nav-item nav-link " href="{{url_for('courses.register')}}">Add students</a>
                         <a class="nav-item nav-link " href="{{url_for('assignments.new')}}">Upload Assignment</a>
                         <a class="nav-item nav-link " href="#">Video Call</a>
                     {% endif %}
                     
-                    {% if current_user.role.role == "student" %}
+                    {% if current_user.role.role == "Student" %}
                         
-                        
+                        <a class="nav-item nav-link" href="{{ url_for('courses.show', course_title=course.title) }}">Course Page</a>
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
                     {% endif %}
 
-                    {% if current_user.role.role == "guardian" %}
+                    {% if current_user.role.role == "Guardian" %}
                         <a class="nav-item nav-link " href="#">View Progress Report</a>
 
                     {% endif %}

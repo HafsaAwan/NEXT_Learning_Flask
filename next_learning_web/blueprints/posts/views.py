@@ -40,11 +40,11 @@ def create(course_name,user_id,post_id):
   
     course_posts = []
 
-    for post in Post.select().where(Post.thread_id == course_thread):
-        course_posts.append(post)
+    # for post in Post.select().where(Post.thread_id == course_thread):
+    #     course_posts.append(post)
 
-    course_posts.reverse()
-    
-    return render_template('courses/show.html', course_title=course_name, course_posts=course_posts)
-    # return redirect(url_for('courses.show',course_title=course_name))
+    # course_posts.reverse()
+
+    # return render_template('courses/show.html', course_title=course_name, course_posts=course_posts, id=id)
+    return redirect(url_for('courses.show',course_title=course_name))
          

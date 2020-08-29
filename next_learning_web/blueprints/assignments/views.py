@@ -24,16 +24,13 @@ def create():
 
 @assignments_blueprint.route('/<course_id>/<id>/upload', methods=['POST'])
 def upload(id, course_id):
-    print("assignment upload")
     user = User.get_or_none(User.id == id)
 
     params = request.form
 
     title = params.get("title")
 
-    # Currently only for students, not yet teachers
     info = StudentCourse.get_or_none(StudentCourse.student_id == id, StudentCourse.course_name_id == course_id)
-    print(info)
     
     if info:
         if current_user.id == int(id):
@@ -72,7 +69,7 @@ def upload(id, course_id):
 def box(course_title):
     course = Course.get_or_none(Course.title == course_title)
 
-    # Ask how to get two things from a table using only one get_or_none
+
     info = StudentCourse.get_or_none(StudentCourse.student_id == current_user.id, StudentCourse.course_name_id == course.id)
 
     assignments = []
