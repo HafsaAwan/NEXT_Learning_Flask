@@ -1,33 +1,6 @@
 {% extends "_layout.html" %}
 {% block header%}
     <style>
-        body {
-            background-color: #eeeeee;
-        }
-
-        .h7 {
-            font-size: 0.8rem;
-        }
-
-        .gedf-wrapper {
-            margin-top: 0.97rem;
-        }
-
-        @media (min-width: 992px) {
-            .gedf-main {
-                padding-left: 4rem;
-                padding-right: 4rem;
-            }
-            .gedf-card {
-                margin-bottom: 2.77rem;
-            }
-        }
-
-        /**Reset Bootstrap*/
-        .dropdown-toggle::after {
-            content: none;
-            display: none;
-        }
         /* Remove the navbar's default margin-bottom and rounded borders */ 
         .navbar {
         margin-bottom: 0;
@@ -59,48 +32,30 @@
         }
         .row.content {height:auto;} 
         }
-
-        .h7 {
-            font-size: 0.8rem;
+        .card {
+            position: relative;
+            display: flex;
+            padding: 20px;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #d2d2dc;
+            border-radius: 11px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+            box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
         }
 
-        .gedf-wrapper {
-            margin-top: 0.97rem;
+        .media img {
+            width: 60px;
+            height: 60px
         }
 
-        @media (min-width: 992px) {
-            .gedf-main {
-                padding-left: 4rem;
-                padding-right: 4rem;
-            }
-            .gedf-card {
-                margin-bottom: 2.77rem;
-            }
+        .reply a {
+            text-decoration: none
         }
-
-        /**Reset Bootstrap*/
-        .dropdown-toggle::after {
-            content: none;
-            display: none;
-        }
-        /* body{margin-top:20px;} */
-
-        .comment-wrapper .panel-body {
-            max-height:650px;
-            overflow:auto;
-        }
-
-        .comment-wrapper .media-list .media img {
-            width:64px;
-            height:64px;
-            border:2px solid #e5e7e8;
-        }
-
-        .comment-wrapper .media-list .media {
-            border-bottom:1px dashed #efefef;
-            margin-bottom:25px;
-        }
-
     </style>
 {% endblock %}
 {% block content %}
@@ -110,7 +65,6 @@
             <div class="col-sm-2 sidenav">
                 
                 <nav class="nav nav-pills nav-fill flex-column mt-2">
-
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                         List of Students
                     </button>
@@ -137,24 +91,24 @@
                         </div>
                     </div>
 
-                    {% if current_user.role.role == "teacher" %}
+                    {% if current_user.role.role == "Teacher" %}
                         <a class="nav-item nav-link " href="{{url_for('courses.register')}}">Add students</a>
                         <a class="nav-item nav-link " href="#">Upload Assignment</a>
                         <a class="nav-item nav-link " href="#">Video Call</a>
                     {% endif %}
                     
-                    {% if current_user.role.role == "student" %}
+                    {% if current_user.role.role == "Student" %}
                         <a class="nav-link" href="{{ url_for('assignments.box', course_title=course_title) }}">My Assignments</a>
                         
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
                     {% endif %}
 
-                    {% if current_user.role.role == "guardian" %}
+                    {% if current_user.role.role == "Guardian" %}
                         <a class="nav-item nav-link " href="#">View Progress Report</a>
 
                     {% endif %}
-                    
+
 
                     <form action="{{url_for('sessions.destroy')}}" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
@@ -162,107 +116,111 @@
                     </form>
                 </nav>
             </div>
-            <div class="col-sm-8 text-left"> 
-                <h1>Welcome</h1>
-                <h3>{{course_title}}</h3>
-                
-                <!-- FORUM -->
-                <div class="container">
-                    <div class="row bootstrap snippets bootdeys">
-                        <div class="col-sm-8">
-                            <div class="comment-wrapper">
-                                <div class="panel panel-info">
-                                    <div class="panel-heading">
-                                        Class Forum
-                                    </div>
-                                    <div class="panel-body">
-                                        
-                                        <form action="{{url_for('posts.create', course_name = course_title )}}" method="POST">
+            <!-- Main content -->
+            <div class="container col-sm-8 p-2" style="box-sizing: border-box;">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="card" style="width: 100%; border-bottom: none; background-color: lightblue;">
+                                
+                                <div class="card-body">
+                                  <h5 class="card-title text-center mb-5"><a href="{{url_for('courses.show',course_title=course_title)}}">{{course_title}}</a> Class Forum </h5>
+                                    <p class="card-text">
+                                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         
-                                            <textarea name="post_content" class="form-control" placeholder="Write an update" rows="3" style="border: 1px solid gray;"></textarea>
+                                            <textarea name="post_content" class="form-control mr-2 ml-3" placeholder="Write an update" rows="4" style="border: 1px solid gray;"></textarea>
                                                 <br>
-                                            <button type="submit" class="btn btn-info pull-right" >Post</button>
+                                            <button type="submit" class="btn btn-primary float-right" >Post</button>
                                         </form>
-                                        
-                                        <div class="clearfix"></div>
-                                        <hr>
-                                        
-                                        {% for post in course_posts %}
-                                            <ul class="media-list">
-                                                <li class="media">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <span class="text-muted pull-right">
-                                                            <small class="text-muted">{{post.created_at}}</small>
-                                                        </span>
-                                                        <strong class="text-success">@{{current_user.username}}</strong>
-                                                        <p>
-                                                            {{post.post_content}}
-                                                        </p>
-                                                    </div>
-                                                </li>
-                                                
-                                            </ul>
-                                        {% endfor %}
-                                        <!-- <ul class="media-list">
-                                            <li class="media">
-                                                <a href="#" class="pull-left">
-                                                    <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
-                                                </a>
-                                                <div class="media-body">
-                                                    <span class="text-muted pull-right">
-                                                        <small class="text-muted">30 min ago</small>
-                                                    </span>
-                                                    <strong class="text-success">@{{current_user.username}}</strong>
-                                                    <p>
-                                                    sdfgh
-                                                    </p>
-                                                </div>
-                                            </li>
-                                            
-                                        </ul> -->
-                                    </div>
+                                    </p>
+                                  
                                 </div>
                             </div>
-                    
+                            {% for post in course_posts %}                            
+                                <div class="row m-3">
+                                    <div class="col-md-12">
+                                        <hr/> 
+                                        <div class="media"> <img class="mr-2 ml-3 rounded-circle d-inline-block align-top" alt="Bootstrap Media Preview" src="{{post.user.full_image_path}}" width="45" height="45"/>
+                                            <div class="media-body text-left">
+                                                <div class="row">
+                                                    <div class="col-8 d-flex">
+                                                        <h5>{{post.user.first_name}} {{post.user.last_name}}</h5> <span class="prettydate ml-3">{{post.created_at}}</span>
+                                                    </div>
+                                                    
+                                                </div> 
+                                                <p style="color: black;">{{post.post_content}}</p>
+                                                <div class="row">
+                                                    <div class="col-4 ml-auto">
+                                                        
+                                                        <div class="pull-right reply"> 
+                                                            <!-- <a href="#"><span><i class="fa fa-reply"></i> reply</span></a>  -->
+                                                            <form class="form-inline" action="{{url_for('posts.create', course_name = course_title,user_id=current_user.id, post_id = post.id )}}" method="POST">
+                                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                                <input type="text" name = "comment" class="form-control" placeholder="Add a comment" style="border:1px solid lightgrey;">
+                                                                
+                                                                <button type="submit" class="btn btn-link ml-auto" ><i class="fa fa-reply" aria-hidden="true"></i> Reply</button> 
+                                                            </form>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                 
+                                                <!-- Comment -->
+                                                {% for comment in post.comments %}
+                                                    <div class="media mt-4"> 
+                                                        <a class="pr-4" href="#"><img class="rounded-circle d-inline-block align-top"width="45" height="45" alt="Bootstrap Media Another Preview" src="{{comment.user.full_image_path}}" /></a>
+                                                        <div class="media-body">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex">
+                                                                    <h5>{{comment.user.first_name}} {{comment.user.last_name}}</h5> <span class="prettydate ml-3">{{comment.created_at}}</span>
+                                                                </div>
+                                                            </div> 
+                                                            <p style="color: maroon;">{{comment.content}}</p>
+                                                        </div>
+                                                    </div>                                                    
+                                                {% endfor %}
+                                                
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
-                
-                
-              
-                 
             </div>
-            <!-- sidebar -->
+            
+            
+            
+            <!-- Main content ends -->
+
+            <!-- Side bar -->
             <div class="col-sm-2 sidenav">
+
+                
+
                 <div class="well card">
                     <div class="card-body">
-                        <h5><u>Upcoming Events</u></h5>
+                        <h5>Upcoming Events</h5>
                          
                         <p>No new events</p>
                         <p></p>
                     </div>
                     
                 </div>
-                <div class="well card">
-                    <div class="card-body">
-                        <h5><u>Reminders</u></h5>
-                        
-                        <p>Set a reminder</p>
-                        <p></p>
-                    </div>
-                    
-                </div>
+
 
             </div>
+            <!-- Sidebar ends -->
         </div>
     </div>
     
-    <footer class="container-fluid text-center">
-        <p>Footer Text</p>
-    </footer>
 
+    <script>
+        $(".prettydate").prettydate();
+      </script>
 {% endblock %}
+

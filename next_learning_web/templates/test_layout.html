@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+    <link href='https://fonts.googleapis.com/css?family=Russo One' rel='stylesheet'>
+    <!--Fontawesome CDN-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"> -->
+    {% assets "home_css" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}">
+    {% endassets %}
+
+    {% assets "home_js" %}
+      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+    {% endassets %}
+		
+    
+    {% block header %}
+    {% endblock %}
+
+    <title>
+      {% block title %}
+      {% endblock %}Next_Learning
+    </title>
+    <style>
+      .sidebar-container {
+        position: fixed;
+        width: 220px;
+        height: 100%;
+        left: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #1a1a1a;
+        color: #fff;
+      }
+
+      .content-container {
+        padding-top: 20px;
+      }
+
+      .sidebar-logo {
+        padding: 10px 15px 10px 30px;
+        font-size: 20px;
+        background-color: #2574A9;
+      }
+
+      .sidebar-navigation {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        position: relative;
+      }
+
+      .sidebar-navigation li {
+        background-color: transparent;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        line-height: 20px;
+      }
+
+      .sidebar-navigation li a {
+        padding: 10px 15px 10px 30px;
+        display: block;
+        color: #fff;
+      }
+
+      .sidebar-navigation li .fa {
+        margin-right: 10px;
+      }
+
+      .sidebar-navigation li a:active,
+      .sidebar-navigation li a:hover,
+      .sidebar-navigation li a:focus {
+        text-decoration: none;
+        outline: none;
+      }
+
+      .sidebar-navigation li::before {
+        background-color: #2574A9;
+        position: absolute;
+        content: '';
+        height: 100%;
+        left: 0;
+        top: 0;
+        -webkit-transition: width 0.2s ease-in;
+        transition: width 0.2s ease-in;
+        width: 3px;
+        z-index: -1;
+      }
+
+      .sidebar-navigation li:hover::before {
+        width: 100%;
+      }
+
+      .sidebar-navigation .header {
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: #151515;
+        padding: 10px 15px 10px 30px;
+      }
+
+      .sidebar-navigation .header::before {
+        background-color: transparent;
+      }
+
+      .content-container {
+        padding-left: 220px;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    {% include 'nav.html' %}
+
+    <div class="sidebar-container">
+      <div class="sidebar-logo">
+        
+          
+          <img src="{{current_user.full_image_path}}" width="38" height="38" class="border rounded-circle d-inline-block align-top" alt="" />
+          
+       
+        {{current_user.username}}
+      </div>
+      <ul class="sidebar-navigation">
+        <li class="header">Navigation</li>
+        {% if current_user.role_id == 2 %}
+        <li>
+          <a href="{{url_for('courses.new')}}">Create a course</a>
+        </li>
+        {% endif %}
+                    
+        {% if current_user.role_id == 1 %}
+
+            <a class="nav-item nav-link " href="#">My Grades</a>
+
+        {% endif %}
+
+        {% if current_user.role_id == 3 %}
+            <a class="nav-item nav-link " href="#">View Progress Report</a>
+
+        {% endif %}
+
+
+        <li class="header">Another Menu</li>
+        <li>
+          <a href="#">
+            <i class="fa fa-users" aria-hidden="true"></i> Friends
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-cog" aria-hidden="true"></i> Settings
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> About Us
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="content-container">
+    
+      <div class="container-fluid">
+        <div>
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              <ul class="flashes mt-1" style="list-style: none; margin-left: 50%;">
+                {% for category, message in messages %}
+                  <div class="alert alert-{{category}}" role="alert">
+                    <li>{{ message }}</li>
+                  </div>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+        </div>
+
+        {% block content %} 
+        {% endblock %}
+    
+      </div>
+      
+    </div>
+
+    <!-- <footer>
+      Made with &hearts; by NEXT Champions at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
+    </footer> -->
+  </body>
+</html>

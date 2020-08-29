@@ -9,3 +9,4 @@ from flask_login import UserMixin
 class Post(BaseModel):
     post_content = pw.TextField(null=False)
     thread = pw.ForeignKeyField(Thread, on_delete='CASCADE')
+    user = pw.ForeignKeyField(User, backref="posts", on_delete='CASCADE')

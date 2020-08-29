@@ -1,0 +1,63 @@
+<div class="container mb-5 mt-5">
+    <div class="card">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center mb-5"> <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a> Class Forum </h3>
+                <div class="row">
+                    <div class="col-md-12">
+                        <!-- Form to add post -->
+                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        
+                            <textarea name="post_content" class="form-control" placeholder="Write an update" rows="4" style="border: 1px solid gray;"></textarea>
+                                <br>
+                            <button type="submit" class="btn btn-primary float-right" >Post</button>
+                        </form>
+                        <!-- Post -->
+                        {% for post in course_posts %}
+                            <div class="media"> <img class="mr-3 rounded-circle" alt="Bootstrap Media Preview" src="https://i.imgur.com/stD0Q19.jpg" />
+                                <div class="media-body">
+
+                                    <div class="row">
+                                        <div class="col-8 d-flex">
+                                            <h5>{{post.user.first_name}} {{post.user.last_name}}</h5> <small class="text-muted"><span class="prettydate">- {{post.created_at}}</span></small>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="pull-right reply"> 
+                                                <form class="form-inline" action="{{url_for('posts.create', course_name = course_title,user_id=current_user.id, post_id = post.id )}}" method="POST">
+                                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                    <input type="text" name = "comment" class="form-control" placeholder="Add a comment" style="border:1px solid lightgrey;">
+                                                    
+                                                    <button type="submit" class="btn btn-link ml-auto" ><i class="fa fa-reply" aria-hidden="true"></i> Reply</button> 
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {{post.post_content}} 
+                                    
+                                    <!-- Comment -->
+                                    {% for comment in post.comments %}
+                                        <div class="media mt-4"> <a class="pr-3" href="#"><img class="rounded-circle" alt="Bootstrap Media Another Preview" src="https://i.imgur.com/xELPaag.jpg" /></a>
+                                            <div class="media-body">
+                                                <div class="row">
+                                                    <div class="col-12 d-flex">
+                                                        <h5>{{comment.user.first_name}} {{comment.user.last_name}}</h5> <small class="text-muted"><span class="prettydate">- {{comment.created_at}}</span></small>
+                                                    </div>
+                                                </div> 
+                                                
+                                                {{comment.content}}
+
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

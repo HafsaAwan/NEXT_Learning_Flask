@@ -9,3 +9,4 @@ from flask_login import UserMixin
 class Comment(BaseModel):
     content = pw.TextField(null=False)
     post = pw.ForeignKeyField(Post, backref="comments", on_delete='CASCADE')
+    user = pw.ForeignKeyField(User, backref="my_comments", on_delete='CASCADE')
