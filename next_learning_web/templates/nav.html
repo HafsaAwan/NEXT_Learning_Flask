@@ -1,32 +1,55 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" style='width:150px; box-sizing: border-box;'  href="{{ url_for('home') }}"><img src="https://imgur.com/76rr2Qa.png" alt="" width="100%" height="100%"></a>
+<nav class="navbar navbar-expand-lg navbar-light bg-dark" style="padding-top: 0; padding-bottom: 0;">
+    <a class="navbar-brand" style='width:10%; box-sizing: border-box; padding: 0;'  href="{{ url_for('home') }}"><img src="https://i.imgur.com/wSW2SV6.png" alt="" width="100%" height="100%"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     
-    <div class="container-fluid-nav" style= "margin:auto;">Remote Learning Taken Further</div>
+    <div class="container-fluid-nav" style= "margin:auto;color:white; align-items: center; justify-items: center;">Remote Learning Taken Further</div>
+    
+        {% if current_user.is_authenticated %}
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item">
-            <!-- User Profile image, rounded, link to edit profile  -->
-                <div class="nav-item">
-                    <a class="nav-item nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">
-                        <div class="img" href="url({{ current_user.full_image_path }});" img style="height:50px; border-radius:50%; border:1px solid #b1b6bd; padding:6px;"></div>
-                    </a>    
-                </div>
-            </li>
-            <!-- Display user name, link to edit profile -->
-            <li>
-                <div class="nav-item">
-                    <a class="nav-item nav-link" href="{{ url_for('users.show',username=current_user.username) }}">
-                        <h3 style="font-size:16px;margin:5px;margin-left: 0;padding:6px 12px;padding-left: 5px;">{{current_user.username}}</h3>
-                    </a>
-                </div>    
-            </li>
-            <li class="nav-item">
-                <a class="btn btn-outline-secondary" href="{{ url_for('home')}}" style="margin:5px;">Home</a>
-            </li>
-        </ul>
-    </div>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                <!-- User Profile image, rounded, link to edit profile  -->
+                    
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{{current_user.full_image_path}}" width="38" height="38" class="border rounded-circle d-inline-block align-top" alt="profile" />
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{url_for('users.show',username=current_user.username)}}">My Profile</a>
+                            
+                            <a class="dropdown-item" href="{{url_for('users.edit', id=current_user.id) }}">
+                                Setting
+                            </a>
+  
+                        </div>
+                        
+                          
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <!-- <a class="btn btn-dark" href="{{ url_for('sessions.destroy')}}" style="margin-top:3px;">Logout</a> -->
+                    <form action="{{url_for('sessions.destroy')}}" method="POST">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        <input type="submit" class="btn " value="Logout">
+                    </form>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link mt-1" href="{{url_for('sessions.new')}}">Sign In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mt-1" href="{{url_for('users.new')}}">Sign Up</a>
+                </li>
+                
+                
+                {% endif %}
+                <li class="nav-item">
+                    <a class="btn btn-dark" href="{{ url_for('home')}}" style="margin-top:3px;">Home</a>
+                </li>
+            </ul>
+        </div>
 </nav>

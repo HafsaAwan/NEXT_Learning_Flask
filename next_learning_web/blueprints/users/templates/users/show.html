@@ -152,6 +152,7 @@
                                 </div>
                             </div>
                         </div>
+                        <a class="nav-item nav-link " href="#">View Progress Report</a>
 
                     {% endif %}
                     
@@ -195,6 +196,9 @@
 
                 {% endif %}
                 <hr>
+                <p>some werid text</p>    
+                
+                <hr/>
                 <h3>Test</h3>
                 <p>Lorem ipsum...</p>
             </div>
@@ -207,6 +211,31 @@
                       <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                       <a href="#" class="card-link">Card link</a>
                       <a href="#" class="card-link">Another link</a>
+                <div class="card" >
+                    <div class="card-body">
+                        {% if current_user.role_id == 2 %}
+                      <h5 class="card-title">Courses</h5>
+                        <p class="card-text">  
+                                <ul style="list-style-type: none; margin: 0; padding: 0;">
+                                    {% for course in teacher_courses %}
+                                        <li>
+                                            <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
+                                            
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            {% else %}
+                                <ul style="list-style-type: none; margin: 0; padding: 0;">
+                                    {% for course in student_courses %}
+                                        <li>
+                                            <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </p>
+
                     </div>
                 </div>
 
@@ -220,6 +249,7 @@
                     
                 </div>
                 
+
 
             </div>
         </div>

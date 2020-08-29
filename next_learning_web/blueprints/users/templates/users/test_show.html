@@ -1,0 +1,44 @@
+{% extends "_layout.html" %}
+{% block header%}
+
+{% endblock %}
+{% block content %}
+			
+<h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="card "style="width: 18rem;">
+            <!-- Card Header -->
+            <div class="card-header">
+                Courses
+            </div>
+        
+            <!-- List Group -->
+            <ul class="list-group list-group-flush">
+                {% if current_user.role.role == "Teacher" %}
+                    {% for course in teacher_courses %}
+                        <li class="list-group-item">
+                            <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
+                            
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    {% for course in student_courses %}
+                    <li class="list-group-item">
+                        <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>   
+                    </li>
+                    {% endfor %}
+                    
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-12 col-md-5">
+      <div class="card">
+        Some text here too
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

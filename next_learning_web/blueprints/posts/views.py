@@ -3,7 +3,7 @@ from models.user import User
 from models.course import Course
 from models.student_course import StudentCourse
 from models.thread import Thread
-from models.teacher_assignment import TeacherAssignment
+from models.comment import Comment
 import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
@@ -17,21 +17,28 @@ posts_blueprint = Blueprint('posts',
 
   
 
-@posts_blueprint.route('/<course_name>/<id>', methods=['POST'])
-def create(course_name, id):
+@posts_blueprint.route('/<course_name>/<user_id>/<post_id>', methods=['POST'])
+def create(course_name,user_id,post_id):
     # print("inside posts create func  :",course_name)
+    user = User.get_or_none(User.id == user_id)
     current_course = Course.get_or_none(Course.title == course_name)
-    print("current_course    ",current_course)
-
+    # print("current_course    ",current_course)
+  
     for thread in current_course.thread:
-                course_thread = thread
-
-            print("current_course thread   ",course_thread)
-            content = request.form.get("post_content")
-            new_post = Post(post_content=content, thread=course_thread)
-            new_post.save()
+        course_thread = thread
+    # print("current_course thread   ",course_thread)
     
-    # course_posts = []
+   
+    if request.form.get("comment"):
+        new_comment = Comment(content=request.form.get("comment"), post=post_id, user=user)
+        new_comment.save()
+    else:
+        content = request.form.get("post_content")
+        new_post = Post(post_content=content, thread=course_thread,user=user)
+        new_post.save()
+    
+  
+    course_posts = []
 
     # for post in Post.select().where(Post.thread_id == course_thread):
     #     course_posts.append(post)

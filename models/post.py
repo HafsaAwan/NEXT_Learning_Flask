@@ -7,6 +7,7 @@ import re
 from flask_login import UserMixin
 
 class Post(BaseModel):
+    user = pw.ForeignKeyField(User, backref="posts", on_delete='CASCADE')
     post_content = pw.TextField(null=False)
     thread = pw.ForeignKeyField(Thread, on_delete='CASCADE')
     file_path = pw.TextField(null=True)
@@ -18,3 +19,4 @@ class Post(BaseModel):
             return app.config.get("S3_LOCATION") + self.file_path
         else:
             return ""
+    
