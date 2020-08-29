@@ -11,6 +11,16 @@ from flask_login import login_user, logout_user, login_required, current_user
 from next_learning_web.util.helpers import upload_file_to_s3
 from werkzeug import secure_filename
 
+## twilio video call related codes
+import os
+from dotenv import load_dotenv
+from twilio.jwt.access_token import AccessToken
+from twilio.jwt.access_token.grants import VideoGrant
+
+load_dotenv()
+twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')
+twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
 
 courses_blueprint = Blueprint('courses',
                             __name__,
@@ -83,3 +93,17 @@ def enroll(course_title):
         flash("The student is already enrolled in this course!", "danger")
         return redirect(url_for("courses.show", course_title=course_title))
     
+
+@courses_blueprint.route('/<course_title>/conference', methods=['GET'])
+def conference(course_title):
+    params = request.form
+    current_course = Course.get_or_none(Course.title == course_title)
+    students = []
+    username = current_user.username
+
+    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
+                        twilio_api_key_secret, identity=username)
+    token.add_grant(VideoGrant(room=course_title))
+    token = {'token': token.to_jwt().decode()}
+
+    return render_template('courses/conference.html', course_title=course_title, username=username, token=token)
