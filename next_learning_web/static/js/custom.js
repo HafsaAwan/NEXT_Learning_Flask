@@ -1,3 +1,21 @@
+// Toastify
+function alertToast(my_message,my_category){
+    console.log(my_message,my_category)
+    Toastify({
+        text: my_message, 
+        className: my_category,
+        gravity: "top", // `top` or `bottom`
+        position: 'right', // `left`, `center` or `right`
+        duration: 3000,
+        destination: "https://github.com/apvarun/toastify-js",
+        newWindow: true,
+        close: true,      
+        backgroundColor: "linear-gradient(to right, #154159, #4381a3)",
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        onClick: function(){} // Callback after click
+      }).showToast();
+  }
+
 /*!
  * Pretty Date v0.1.0
  * https://github.com/fengyuanchen/prettydate

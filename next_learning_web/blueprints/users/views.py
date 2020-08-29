@@ -100,7 +100,7 @@ def update(id):
                 user.password = password
             
             if user.save():
-                flash("Successfully updated user!")
+                flash("Successfully updated user!","success")
                 return redirect(url_for("users.show", username=user.username))
             else:
                 flash("Unable to edit!")
@@ -108,7 +108,7 @@ def update(id):
                     flash(err)
                 return redirect(url_for("users.edit", id=user.id))
         else:
-            flash("Cannot edit users other than yourself!")
+            flash("Cannot edit users other than yourself!","danger")
             return redirect(url_for("users.show", username=user.username))
     else:
         flash("No such user!")
@@ -122,7 +122,7 @@ def upload(id):
         if current_user.id == int(id):
             
             if "profile_image" not in request.files:
-                flash("No file provided!")
+                flash("No file provided!","danger")
                 return redirect(url_for("users.edit", id=id))
 
             file = request.files["profile_image"]
@@ -133,10 +133,10 @@ def upload(id):
             if user.save():
                 return redirect(url_for("users.show", username=user.username))
             else:
-                flash("Could not upload image. Please try again")
+                flash("Could not upload image. Please try again","danger")
                 return redirect(url_for("users.edit", id=id))       
         else:
-            flash("Cannot edit users other than yourself!")
+            flash("Cannot edit users other than yourself!","danger")
             return redirect(url_for("users.show", username=user.username))
     else:
         flash("No such user!")
