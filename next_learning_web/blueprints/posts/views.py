@@ -3,6 +3,7 @@ from models.user import User
 from models.course import Course
 from models.student_course import StudentCourse
 from models.thread import Thread
+from models.teacher_assignment import TeacherAssignment
 import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
@@ -16,26 +17,27 @@ posts_blueprint = Blueprint('posts',
 
   
 
-@posts_blueprint.route('/<course_name>', methods=['POST'])
-def create(course_name):
+@posts_blueprint.route('/<course_name>/<id>', methods=['POST'])
+def create(course_name, id):
     # print("inside posts create func  :",course_name)
     current_course = Course.get_or_none(Course.title == course_name)
     print("current_course    ",current_course)
-  
+
     for thread in current_course.thread:
-        course_thread = thread
-    print("current_course thread   ",course_thread)
-    content = request.form.get("post_content")
-    new_post = Post(post_content=content, thread=course_thread)
-    new_post.save()
-    
-    course_posts = []
+                course_thread = thread
 
-    for post in Post.select().where(Post.thread_id == course_thread):
-        course_posts.append(post)
-
-    course_posts.reverse()
+            print("current_course thread   ",course_thread)
+            content = request.form.get("post_content")
+            new_post = Post(post_content=content, thread=course_thread)
+            new_post.save()
     
-    return render_template('courses/show.html', course_title=course_name, course_posts=course_posts)
-    # return redirect(url_for('courses.show',course_title=course_name))
+    # course_posts = []
+
+    # for post in Post.select().where(Post.thread_id == course_thread):
+    #     course_posts.append(post)
+
+    # course_posts.reverse()
+
+    # return render_template('courses/show.html', course_title=course_name, course_posts=course_posts, id=id)
+    return redirect(url_for('courses.show',course_title=course_name))
          

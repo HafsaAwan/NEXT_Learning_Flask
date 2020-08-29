@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import User
 from models.course import Course
 from models.student_course import StudentCourse
+from models.student_guardian import StudentGuardian
 import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
@@ -55,9 +56,19 @@ def show(username):
     for info in student_info:
         for course in Course.select().where(Course.id == info.course_name_id):
             student_courses.append(course)
+
+    child_parent = []
+    child_info = []
+
+    for student in StudentGuardian.select().where(StudentGuardian.guardian_id == current_user.id):
+        child_parent.append(student)
+
+    for info in child_parent:
+        for child in User.select().where(User.id == info.student_id):
+            child_info.append(child)
     
     if user:
-        return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses)
+        return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses, child_info=child_info)
     else:
         flash(f"No {username} user found.", "danger" )
         return redirect(url_for('home'))
@@ -141,3 +152,28 @@ def upload(id):
     else:
         flash("No such user!")
         redirect(url_for("home"))
+
+
+@users_blueprint.route('/<id>/register', methods=['POST'])
+@login_required
+def register(id):
+    params = request.form
+
+    username = params.get('username')
+
+    student = User.get_or_none(User.username == username)
+
+    if student.role_id == 1:
+        info = StudentGuardian(student_id=student.id, guardian_id=current_user.id)
+        info.save()
+        flash("Successfully register a child!", "success")
+        return redirect(url_for('users.show', username=current_user.username))
+    else:
+        flash("User is not a student!", "danger")
+        return redirect(url_for('users.show', username=current_user.username))
+
+
+        
+ 
+    
+

@@ -18,7 +18,7 @@ courses_blueprint = Blueprint('courses',
 
 @courses_blueprint.route('/new', methods=['GET'])
 def new():
-    return render_template('courses/new.html')
+    pass
 
 @courses_blueprint.route('/', methods=['POST'])
 def create():
@@ -35,7 +35,7 @@ def create():
         return redirect(url_for("users.show", username=current_user.username))  # then redirect to profile page
     else:
         flash(new_course.errors, "danger")
-        return redirect(url_for("courses.new"))
+        return redirect(url_for("users.show"))
 
 @courses_blueprint.route('/<course_title>', methods=['GET'])
 def show(course_title):
@@ -45,8 +45,6 @@ def show(course_title):
     for info in StudentCourse.select().join(Course).where(Course.title == course_title):
         for student in User.select().where(User.id == info.student_id):
             students.append(student)
-
-    # return render_template('courses/show.html', course_title=course_title, students=students)
 
     for thread in current_course.thread:
         course_thread = thread
@@ -59,39 +57,29 @@ def show(course_title):
     course_posts.reverse()
     
     return render_template('courses/show.html', course_title=course_title,students=students, course_posts=course_posts)
-    # return render_template('courses/show.html',course_title=course_title)
 
 
-    
-@courses_blueprint.route('/register', methods=['GET'])
-def register():
-    courses = []
-
-    for course in Course.select().where(Course.teacher_id == current_user.id):
-        print(course)
-        courses.append(course)
-    
-    return render_template('courses/register.html', courses=courses)
-
-@courses_blueprint.route('/enroll', methods=['POST'])
-def enroll():
+@courses_blueprint.route('/<course_title>/enroll', methods=['POST'])
+def enroll(course_title):
     params = request.form
 
     username = params.get("username")
-    course = params.get("course")
 
+    current_course = Course.get_or_none(Course.title == course_title)
     student = User.get_or_none(User.username == username)
-    course = Course.get_or_none(Course.id == course)
-    print(student)
-    print(course)
+    check_student = StudentCourse.get_or_none(StudentCourse.student_id==student.id, StudentCourse.course_name_id==current_course.id)
 
-    if student and course:
-        new_student_course = StudentCourse(student_id=student.id, course_name_id=course.id)
+    if not check_student:
+        if student:
+            new_student_course = StudentCourse(student_id=student.id, course_name_id=current_course.id)
 
-        new_student_course.save()
-        flash("Successfully enrolled a student!", "success")
-        return redirect(url_for("users.show", username=current_user.username))
+            new_student_course.save()
+            flash("Successfully enrolled a student!", "success")
+            return redirect(url_for("courses.show", course_title=course_title))
+        else:
+            flash("Failed to enroll student!", "danger")
+            return redirect(url_for("courses.show", course_title=course_title))
     else:
-        flash("Failed to enroll student!", "danger")
-        return redirect(url_for("courses.register"))
+        flash("The student is already enrolled in this course!", "danger")
+        return redirect(url_for("courses.show", course_title=course_title))
     

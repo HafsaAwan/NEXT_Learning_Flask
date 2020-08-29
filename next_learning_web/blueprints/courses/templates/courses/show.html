@@ -137,20 +137,54 @@
                         </div>
                     </div>
 
-                    {% if current_user.role.role == "teacher" %}
-                        <a class="nav-item nav-link " href="{{url_for('courses.register')}}">Add students</a>
+                    {% if current_user.role.role == "Teacher" %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#studentCourseModal">
+                            Add Students
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="studentCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add A Student Into The {{course_title}} Course</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action = "{{ url_for('courses.enroll', course_title=course_title) }}" method="POST">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                                            <div class="form-group">
+                                                <label for="username">Username:</label>
+                                                <input type="text" name ="username" class="form-control" required/>
+                                            </div>
+
+                                        
+                                            <div class="form-group m-0">
+                                                <button type="submit" class="btn btn-primary btn-block">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
                         <a class="nav-item nav-link " href="#">Upload Assignment</a>
                         <a class="nav-item nav-link " href="#">Video Call</a>
                     {% endif %}
                     
-                    {% if current_user.role.role == "student" %}
+                    {% if current_user.role.role == "Student" %}
                         <a class="nav-link" href="{{ url_for('assignments.box', course_title=course_title) }}">My Assignments</a>
                         
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
                     {% endif %}
 
-                    {% if current_user.role.role == "guardian" %}
+                    {% if current_user.role.role == "Guardian" %}
                         <a class="nav-item nav-link " href="#">View Progress Report</a>
 
                     {% endif %}
@@ -177,7 +211,7 @@
                                     </div>
                                     <div class="panel-body">
                                         
-                                        <form action="{{url_for('posts.create', course_name = course_title )}}" method="POST">
+                                        <form action="{{url_for('posts.create', id=current_user.id, course_name = course_title )}}" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         
                                             <textarea name="post_content" class="form-control" placeholder="Write an update" rows="3" style="border: 1px solid gray;"></textarea>

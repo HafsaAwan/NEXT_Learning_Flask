@@ -43,23 +43,115 @@
                     <div class="user-logo">
                         <div class="img" style="background-image: url({{current_user.full_image_path}});"></div>
                         <h3>{{current_user.username}}</h3>
+                        <h4>{{current_user.role.role}}</h4>
                     </div>
                 </div>
                 <nav class="nav nav-pills nav-fill flex-column mt-2">
                     <a class="nav-item nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit Profile</a>
-                    {% if current_user.role.role == "teacher" %}
-                        <a class="nav-item nav-link " href="#">Courses</a>
-                        <a class="nav-item nav-link " href="{{url_for('courses.new')}}">Create a course</a>
+                    {% if current_user.role.role == "Teacher" %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#courseModal">
+                            Create a Course
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Course Creation</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action = "{{ url_for('courses.create') }}" method="POST">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    
+                                            <div class="form-group">
+                                                <label for="course_title">Course Title:</label>
+                                                <input type="text" name ="course_title" class="form-control" required/>
+                                            </div>
+    
+                                            <div class="form-group m-0">
+                                                <button type="submit" class="btn btn-primary btn-block">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     {% endif %}
                     
-                    {% if current_user.role.role == "student" %}
+                    {% if current_user.role.role == "Student" %}
 
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
                     {% endif %}
 
-                    {% if current_user.role.role == "guardian" %}
-                        <a class="nav-item nav-link " href="#">View Progress Report</a>
+                    {% if current_user.role.role == "Guardian" %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#childListModal">
+                            List of Child
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        {% for child in child_info %}
+                                            <ul>
+                                                <li>
+                                                    {{child.first_name}} {{child.last_name}}
+                                                </li>
+                                            </ul>
+                                        {% endfor %}
+
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#childModal">
+                                            Add Your Child
+                                        </button>
+
+                                        <div class="modal fade" id="childModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action = "{{ url_for('users.register', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+                                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                                            <div class="form-group">
+                                                                <label for="username">Username:</label>
+                                                                <input type="text" name ="username" class="form-control" required/>
+                                                            </div>
+
+                                                            <hr/>
+
+                                                            <div>
+                                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                                            </div>
+                                            
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     {% endif %}
                     
@@ -73,39 +165,51 @@
                 </nav>
             </div>
             <div class="col-sm-8 text-left"> 
-                <h1>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h1>
-                <h4>Role: {{current_user.role.role}}</h4>
+                <div>
+                    <h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
+                </div>
+                
                 {% if current_user.role_id == 2 %}
-                    <div>
-                        <a href="{{ url_for('courses.new') }}">Add a course</a>
-                    </div>
 
-                    <h3>All Courses : </h3>
+                    <h3>Courses I am tutoring: </h3>
 
-                    {% for course in teacher_courses %}
-                        <li>
-                            <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
-                            
-                        </li>
-                    {% endfor %}
+                    <ul>
+                        {% for course in teacher_courses %}
+                            <li>
+                                <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
+                                
+                            </li>
+                        {% endfor %}
+                    </ul>
 
-                {% else %}
-                    <h3>All Courses : </h3>
+                {% elif current_user.role_id == 1 %}
+                    <h3>Courses I am enrolled in: </h3>
 
-                    {% for course in student_courses %}
-                        <li>
-                            <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
-                        </li>
-                    {% endfor %}
+                    <ul>
+                        {% for course in student_courses %}
+                            <li>
+                                <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
 
-                    
-                    
                 {% endif %}
                 <hr>
                 <h3>Test</h3>
                 <p>Lorem ipsum...</p>
             </div>
             <div class="col-sm-2 sidenav">
+
+                <div class="card"">
+                    <div class="card-body">
+                      <h5 class="card-title">Card title</h5>
+                      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                      <a href="#" class="card-link">Card link</a>
+                      <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+
                 <div class="well card">
                     <div class="card-body">
                         <h5>Upcoming Events</h5>
@@ -115,15 +219,7 @@
                     </div>
                     
                 </div>
-                <div class="well card">
-                    <div class="card-body">
-                        <h5>Reminders</h5>
-                        
-                        <p>Set a reminder</p>
-                        <p></p>
-                    </div>
-                    
-                </div>
+                
 
             </div>
         </div>
