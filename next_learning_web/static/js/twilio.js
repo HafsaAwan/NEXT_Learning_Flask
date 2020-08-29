@@ -48,7 +48,7 @@ function connectButtonHandler(event) {
 function connect(username) {
     let promise = new Promise((resolve, reject) => {
         // get a token from the back end
-        fetch('/login', {
+        fetch('/courses/twilio', {
             method: 'POST',
             body: JSON.stringify({'username': username})
         }).then(res => res.json()).then(data => {

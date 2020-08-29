@@ -94,7 +94,7 @@ def enroll(course_title):
         return redirect(url_for("courses.show", course_title=course_title))
     
 
-@courses_blueprint.route('/<course_title>/conference', methods=['GET'])
+@courses_blueprint.route('/<course_title>/conference')
 def conference(course_title):
     params = request.form
     current_course = Course.get_or_none(Course.title == course_title)
@@ -106,4 +106,13 @@ def conference(course_title):
     token.add_grant(VideoGrant(room=course_title))
     token = {'token': token.to_jwt().decode()}
 
-    return render_template('courses/conference.html', course_title=course_title, username=username, token=token)
+    return render_template('courses/conference.html', course_title=course_title, username=username)
+
+@courses_blueprint.route('/courses/twilio', methods=['GET','POST'])
+def twilio():
+    username = current_user.username
+    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
+                        twilio_api_key_secret, identity=username)
+    token.add_grant(VideoGrant(room="Testing Room"))
+
+    return {'token': token.to_jwt().decode()}
