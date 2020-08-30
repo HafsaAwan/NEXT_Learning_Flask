@@ -23,22 +23,30 @@ def create(course_name,user_id,post_id):
     user = User.get_or_none(User.id == user_id)
     current_course = Course.get_or_none(Course.title == course_name)
     # print("current_course    ",current_course)
-  
+    
     for thread in current_course.thread:
         course_thread = thread
     # print("current_course thread   ",course_thread)
     
-   
     if request.form.get("comment"):
         new_comment = Comment(content=request.form.get("comment"), post=post_id, user=user)
         new_comment.save()
     else:
-        content = request.form.get("post_content")
-        new_post = Post(post_content=content, thread=course_thread,user=user)
-        new_post.save()
+        if "assignment" in request.files:
+            file = request.files["assignment"]
+            file.filename = secure_filename(file.filename)
+            file_path = upload_file_to_s3(file, user.username)
+
+            content = request.form.get("post_content")
+            new_post = Post(post_content=content, thread=course_thread,user=user, file_path=file_path)
+            new_post.save()
+        else:
+            content = request.form.get("post_content")
+            new_post = Post(post_content=content, thread=course_thread,user=user)
+            new_post.save()
     
   
-    course_posts = []
+    # course_posts = []
 
     # for post in Post.select().where(Post.thread_id == course_thread):
     #     course_posts.append(post)
@@ -46,5 +54,9 @@ def create(course_name,user_id,post_id):
     # course_posts.reverse()
 
     # return render_template('courses/show.html', course_title=course_name, course_posts=course_posts, id=id)
-    return redirect(url_for('courses.show',course_title=course_name))
+    return redirect(url_for('courses.show',course_title=course_name, user_id=user_id))
+
+@posts_blueprint.route('/assignments', methods=['POST'])
+def show(course_name,user_id,post_id):
+    pass
          

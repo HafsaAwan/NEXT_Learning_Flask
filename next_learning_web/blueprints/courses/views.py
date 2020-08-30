@@ -47,8 +47,9 @@ def create():
         flash(new_course.errors, "danger")
         return redirect(url_for("users.show"))
 
-@courses_blueprint.route('/<course_title>', methods=['GET'])
-def show(course_title):
+@courses_blueprint.route('/<course_title>/<user_id>', methods=['GET'])
+def show(course_title, user_id):
+    user = User.get_by_id(user_id)
     current_course = Course.get_or_none(Course.title == course_title)
     students = []
 
@@ -66,11 +67,11 @@ def show(course_title):
 
     course_posts.reverse()
     
-    return render_template('courses/show.html', course_title=course_title,students=students, course_posts=course_posts)
+    return render_template('courses/show.html', course_title=course_title,students=students, course_posts=course_posts, user=user)
 
 
-@courses_blueprint.route('/<course_title>/enroll', methods=['POST'])
-def enroll(course_title):
+@courses_blueprint.route('/<course_title>/<user_id>/enroll', methods=['POST'])
+def enroll(course_title, user_id):
     params = request.form
 
     username = params.get("username")
@@ -85,13 +86,13 @@ def enroll(course_title):
 
             new_student_course.save()
             flash("Successfully enrolled a student!", "success")
-            return redirect(url_for("courses.show", course_title=course_title))
+            return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
         else:
             flash("Failed to enroll student!", "danger")
-            return redirect(url_for("courses.show", course_title=course_title))
+            return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
     else:
         flash("The student is already enrolled in this course!", "danger")
-        return redirect(url_for("courses.show", course_title=course_title))
+        return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
     
 
 @courses_blueprint.route('/<course_title>/conference')
