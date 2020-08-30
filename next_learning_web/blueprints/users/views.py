@@ -41,8 +41,10 @@ def create():
 @login_required   # only can access this route after signed in
 def show(username):
     user = User.get_or_none(User.username == username) # check whether user exist in database
+
     teacher_courses = []
 
+    # get the courses taught by the current teacher
     for course in Course.select().where(Course.teacher_id == current_user.id):
         print(course)
         teacher_courses.append(course)
@@ -50,9 +52,11 @@ def show(username):
     student_info = []
     student_courses = []
 
+    # get all courses id enrolled by the current student
     for info in StudentCourse.select().where(StudentCourse.student_id == current_user.id):
         student_info.append(info)
     
+    # get the info of the courses enrolled the current student
     for info in student_info:
         for course in Course.select().where(Course.id == info.course_name_id):
             student_courses.append(course)
@@ -60,15 +64,41 @@ def show(username):
     child_parent = []
     child_info = []
 
+    # get all child id respective to the current guardian
     for student in StudentGuardian.select().where(StudentGuardian.guardian_id == current_user.id):
         child_parent.append(student)
 
+    # get child info respective to current guardian
     for info in child_parent:
         for child in User.select().where(User.id == info.student_id):
             child_info.append(child)
+
+    child_course = []
+    course_info = []
+    teacher_info = []
+
+    # get all courses enrolled by the child respective to the current guardian
+    for info in child_info:
+        for course in StudentCourse.select().where(StudentCourse.student_id == info.id):
+            child_course.append(course)
+
+    # get courses details enrolled by the child respective to the current guardian
+    for info in child_course:
+        for details in Course.select().where(Course.id == info.course_name_id):
+            course_info.append(details)
+
+    # get teacher details respective to courses enrolled by child respective to the current guardian
+    for info in course_info:
+        for teacher in User.select().where(User.id == info.teacher_id):
+            teacher_info.append(teacher)
+
+    # course_teacher = {teacher_info[i].first_name + " " + teacher_info[i].last_name: course_info[i].title for i in range(len(teacher_info))}
+    course_teacher = dict(zip(teacher_info, course_info)) 
+    print(str(course_teacher))
     
+
     if user:
-        return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses, child_info=child_info)
+        return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses, child_info=child_info, course_teacher=course_teacher)
     else:
         flash(f"No {username} user found.", "danger" )
         return redirect(url_for('home'))
