@@ -12,6 +12,7 @@ from next_learning_web.util.helpers import upload_file_to_s3
 from werkzeug import secure_filename
 
 
+
 courses_blueprint = Blueprint('courses',
                             __name__,
                             template_folder='templates')
@@ -32,13 +33,16 @@ def create():
         new_thread.save()
         print("new thread", new_thread.id)
         flash("Successfully Created a Course!","success")
-        return redirect(url_for("users.show", username=current_user.username))  # then redirect to profile page
+        return redirect(url_for("users.show", username=current_user.username, user_id=current_user.id))  # then redirect to profile page
     else:
         flash(new_course.errors, "danger")
         return redirect(url_for("users.show"))
 
-@courses_blueprint.route('/<course_title>', methods=['GET'])
-def show(course_title):
+@courses_blueprint.route('/<course_title>/<user_id>', methods=['GET'])
+def show(course_title, user_id):
+    
+    user = User.get_by_id(user_id)
+
     current_course = Course.get_or_none(Course.title == course_title)
     students = []
 
@@ -56,7 +60,7 @@ def show(course_title):
 
     course_posts.reverse()
     
-    return render_template('courses/show.html', course_title=course_title,students=students, course_posts=course_posts)
+    return render_template('courses/show.html', course_title=course_title,students=students, course_posts=course_posts, user=user)
 
 
 @courses_blueprint.route('/<course_title>/enroll', methods=['POST'])
@@ -75,11 +79,11 @@ def enroll(course_title):
 
             new_student_course.save()
             flash("Successfully enrolled a student!", "success")
-            return redirect(url_for("courses.show", course_title=course_title))
+            return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
         else:
             flash("Failed to enroll student!", "danger")
-            return redirect(url_for("courses.show", course_title=course_title))
+            return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
     else:
         flash("The student is already enrolled in this course!", "danger")
-        return redirect(url_for("courses.show", course_title=course_title))
+        return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
     

@@ -156,7 +156,7 @@
 
                     {% endif %}
                     
-                    <a class="nav-item nav-link" href="#">My Messages</a>
+                    <a class="nav-item nav-link" href="{{url_for('messages.show')}}">My Messages</a>
 
 
                     <form action="{{url_for('sessions.destroy')}}" method="POST">
@@ -177,7 +177,7 @@
                     <ul>
                         {% for course in teacher_courses %}
                             <li>
-                                <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
+                                <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
                                 
                             </li>
                         {% endfor %}
@@ -189,22 +189,38 @@
                     <ul>
                         {% for course in student_courses %}
                             <li>
-                                <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                                <a href="{{url_for('courses.show',course_title=course.title,user_id=current_user.id)}}">{{course.title}}</a>
                             </li>
                         {% endfor %}
                     </ul>
+                <!-- For guardian -->
+                {% elif current_user.role_id == 3 %}
+                    <h5>Currently enrolled children details:</h5>
+                    {% for child in child_info %}
+                    <ul>
+                        <li>
+                            {{child.first_name}} {{child.last_name}}
+                        </li>
 
+                        <ul>
+                            {% for info in course_teacher %}
+                                <li>
+                                    {{info.first_name}} {{info.last_name}} : {{course_teacher[info].title}}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </ul>
+                {% endfor %}
                 {% endif %}
                 <hr>
-                <p>some werid text</p>    
                 
-                <hr/>
                 <h3>Test</h3>
                 <p>Lorem ipsum...</p>
             </div>
+            <!-- RIGHT SIDEBAR -->
             <div class="col-sm-2 sidenav">
 
-                <div class="card"">
+                <div class="card">
                     <div class="card-body">
                       <h5 class="card-title">Card title</h5>
                       <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
@@ -219,7 +235,7 @@
                                 <ul style="list-style-type: none; margin: 0; padding: 0;">
                                     {% for course in teacher_courses %}
                                         <li>
-                                            <a href="{{url_for('courses.show', course_title=course.title)}}">{{course.title}}</a>
+                                            <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
                                             
                                         </li>
                                     {% endfor %}
@@ -229,7 +245,7 @@
                                 <ul style="list-style-type: none; margin: 0; padding: 0;">
                                     {% for course in student_courses %}
                                         <li>
-                                            <a href="{{url_for('courses.show',course_title=course.title)}}">{{course.title}}</a>
+                                            <a href="{{url_for('courses.show',course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -254,10 +270,8 @@
             </div>
         </div>
     </div>
-    
-    <footer class="container-fluid text-center">
-        <p>Footer Text</p>
-    </footer>
+    <!-- RIGHT SIDEBAR END -->
+
 
 {% endblock %}
 

@@ -5,6 +5,7 @@ from next_learning_web.blueprints.sessions.views import sessions_blueprint
 from next_learning_web.blueprints.assignments.views import assignments_blueprint
 from next_learning_web.blueprints.courses.views import courses_blueprint
 from next_learning_web.blueprints.posts.views import posts_blueprint
+from next_learning_web.blueprints.messages.views import messages_blueprint
 
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
@@ -20,6 +21,7 @@ app.register_blueprint(sessions_blueprint, url_prefix="/sessions")
 app.register_blueprint(assignments_blueprint, url_prefix="/assignments")
 app.register_blueprint(courses_blueprint, url_prefix="/courses")
 app.register_blueprint(posts_blueprint, url_prefix="/posts")
+app.register_blueprint(messages_blueprint, url_prefix="/messages")
 
 @app.errorhandler(500)
 def internal_server_error(e):
