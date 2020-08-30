@@ -79,7 +79,7 @@
                     
                     {% if current_user.role.role == "Student" %}
                         
-                        <a class="nav-item nav-link" href="{{ url_for('courses.show', course_title=course.title) }}">Course Page</a>
+                        <a class="nav-item nav-link" href="{{ url_for('courses.show', course_title=course.title, user_id=current_user.id) }}">Course Page</a>
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
                     {% endif %}

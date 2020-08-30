@@ -41,6 +41,7 @@ def create():
 @login_required   # only can access this route after signed in
 def show(username):
     user = User.get_or_none(User.username == username) # check whether user exist in database
+
     teacher_courses = []
 
     # get the courses taught by the current teacher
@@ -71,7 +72,7 @@ def show(username):
     for info in child_parent:
         for child in User.select().where(User.id == info.student_id):
             child_info.append(child)
-    
+
     child_course = []
     course_info = []
     teacher_info = []
@@ -94,6 +95,8 @@ def show(username):
     # course_teacher = {teacher_info[i].first_name + " " + teacher_info[i].last_name: course_info[i].title for i in range(len(teacher_info))}
     course_teacher = dict(zip(teacher_info, course_info)) 
     print(str(course_teacher))
+    
+    
 
     if user:
         return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses, child_info=child_info, course_teacher=course_teacher)
