@@ -107,7 +107,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action = "{{ url_for('courses.enroll', course_title=course_title) }}" method="POST">
+                                        <form action = "{{ url_for('courses.enroll', course_title=course_title, user_id=current_user.id) }}" method="POST">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 
                                             <div class="form-group">
@@ -127,7 +127,6 @@
                             </div>
                         </div>
                     
-                        <a class="nav-item nav-link " href="#">Upload Assignment</a>
                         <a class="nav-item nav-link " href="#">Video Call</a>
                     {% endif %}
                     
@@ -159,13 +158,21 @@
                             <div class="card" style="width: 100%; border-bottom: none; background-color: lightblue;">
                                 
                                 <div class="card-body">
-                                  <h5 class="card-title text-center mb-5"><a href="{{url_for('courses.show',course_title=course_title)}}">{{course_title}}</a> Class Forum </h5>
+                                  <h5 class="card-title text-center mb-5"><a href="{{url_for('courses.show',course_title=course_title, user_id=current_user.id)}}">{{course_title}}</a> Class Forum </h5>
                                     <p class="card-text">
-                                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST">
+                                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST" enctype="multipart/form-data">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         
                                             <textarea name="post_content" class="form-control mr-2 ml-3" placeholder="Write an update" rows="4" style="border: 1px solid gray;"></textarea>
                                                 <br>
+
+                                            {% if user.role.role == 'Teacher' %}
+                                                <div class="form-group">
+                                                    <label for="assignment">Choose assignment:</label>
+                                                    <input type="file" class="form-control-file" name="assignment">
+                                                </div>
+                                            {% endif %}
+                                            
                                             <button type="submit" class="btn btn-primary float-right" >Post</button>
                                         </form>
                                     </p>
@@ -182,7 +189,13 @@
                                                     <div class="col-8 d-flex">
                                                         <h5>{{post.user.first_name}} {{post.user.last_name}}</h5> <span class="prettydate ml-3">{{post.created_at}}</span>
                                                     </div>
-                                                    
+
+                                                    {% if post.file_path %}
+                                                        <div>
+                                                            <a href='{{post.full_file_path}}'>Assignment Download</a>
+                                                        </div>
+                                                    {% endif %}
+
                                                 </div> 
                                                 <p style="color: black;">{{post.post_content}}</p>
                                                 <div class="row">
