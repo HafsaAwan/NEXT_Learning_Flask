@@ -6,29 +6,149 @@
 
 {% block header %}
 <style>
-  body  {
-      background-image: url('https://images.unsplash.com/photo-1558346648-9757f2fa4474?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80');
-      background-attachment:fixed;
-      background-repeat: no-repeat;
-      background-size: 100% 100%;
-      font-family: 'Russo One';
-      padding: 0%;
-    }
+  body {
+  margin:0px;
+  font-family:'Roboto';
+  text-align:center;
+  background-image: url('https://images.unsplash.com/photo-1556202424-1a243730f0cf?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80');
+  background-size: cover;
+}
+
+#container {
+  color:rgb(255, 255, 255);
+  font-family: 'Permanent Marker', cursive;
+  text-transform: uppercase;
+  font-size:35px;
+  font-weight:bold;
+  padding-top:30px;  
+  position:relative;
+  width:100%;
+  bottom:45%;
+  display:block;
+}
+
+#flip {
+  height:50px;
+  overflow:hidden;
+  text-align: center;
+}
+
+#flip > div > div {
+  color:#fff;
+  padding:4px 12px;
+  height:50px;
+  margin-bottom:45px;
+  display:inline-block;
+}
+
+#flip div:first-child {
+  animation: show 8s linear infinite;
+}
+
+#flip div div {
+  background:#42c58a;
+}
+#flip div:first-child div {
+  background:#4ec7f3;
+}
+#flip div:last-child div {
+  background:#DC143C;
+}
+
+@keyframes show {
+  0% {margin-top:-270px;}
+  5% {margin-top:-180px;}
+  33% {margin-top:-180px;}
+  38% {margin-top:-90px;}
+  66% {margin-top:-90px;}
+  71% {margin-top:0px;}
+  99.99% {margin-top:0px;}
+  100% {margin-top:-270px;}
+}
+
+p {
+  position:fixed;
+  width:100%;
+  bottom:30px;
+  font-size:12px;
+  color:#999;
+  margin-top:200px;
+}
+  .grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-template-rows: auto;
+  padding: 5px;
+  position: static;
+  margin: 0;
+  justify-content: space-around;
+  text-align: center;
+  margin-top:20px;
+  margin-bottom: 20px;
+}
+
+.card img{
+  height: 60px;
+  margin-top: 10px;
+}
+
+.detail{
+  font-size: 16px;
+  color: rgb(114, 114, 114);
+  font-family: Russo One;
+  text-transform: none;
+  font-weight: lighter;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  box-sizing: border-box;
+  width: 18rem;
+}
+
     </style>
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron">
-  <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1052&q=80" alt="Books">
-  <div class="image-text">Breaking Boundaries In Virtual Education</div>
-  <!-- Button style is hardcoded somewhere -->
-  <button id="homepage-button" class="w3-button w3-yellow w3-border">Learn More</button>
+
+<div id=container>
+  Transforming 
+  <div id=flip>
+    <div><div>Classrooms</div></div>
+    <div><div>Lifestyle</div></div>
+    <div><div>Everything</div></div>
+  </div>
+  In Education
+
+  <div class="grid-container">
+      <div class="card">
+        <img src="https://image.flaticon.com/icons/svg/2883/2883939.svg" alt="Avatar" style="width:100%">
+            <h4><b>Certified Teachers</b></h4>
+            <div class="detail">Our educators are globally certified professionals in supporting the academic achievement of our students. Every Next Learning educators must be certified to teach in our school.</div>
+      </div>
+      <div class="card">
+        <img src="https://image.flaticon.com/icons/svg/524/524569.svg" alt="Avatar" style="width:100%">
+          <div class="container">
+            <h4><b>Special Education</b></h4>
+            <div class="detail">Next Learning is tailored to meet the needs of students with disabilities. The services and supports one child receives may be very different from what another child receives. It’s all about individualization.</div>
+          </div>
+      </div>
+      <div class="card">
+        <img src="https://image.flaticon.com/icons/svg/3100/3100752.svg" alt="Avatar" style="width:100%">
+          <div class="container">
+            <h4><b>Classroom Experience</b></h4>
+            <div class="detail">The course materials and activities may be accessed from any computer whilst incorperating the ideal values of an "online physical classroom" environment.</div>
+          </div>
+      </div>
+      <div class="card">
+        <img src="https://image.flaticon.com/icons/svg/3329/3329494.svg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Personal Guidance</b></h4>
+          <div class="detail">We aim in helping the children to get along with others and to develop certain social qualities. At this stage opportunities or facilities are given to pupils for their self expression.</div>
+        </div>
+      </div>
 </div>
-
-<div class="grid-container">
-  <div class="item2"><img src="https://image.flaticon.com/icons/svg/2883/2883939.svg" alt="Books"><h3>Certified Teachers</h3><h7>Our educators are globally certified professionals in supporting the academic achievement of our students. Every Next Learning educators must be certified to teach in our school.</h7></div>
-  <div class="Item2"><img src="https://image.flaticon.com/icons/svg/524/524569.svg" alt="Books"><h3>Special Education</h3><h7>Next Learning is tailored to meet the needs of students with disabilities. The services and supports one child receives may be very different from what another child receives. It’s all about individualization.</h7></div>
-  <div class="Item3"><img src="https://image.flaticon.com/icons/svg/3100/3100752.svg" alt="Books"><h3>Book & Library</h3><h7>Online rescources are readily accessible for our students that are seeking for useful information in enriching their educational experience.</h7></div>
-  <div class="Item4"><img src="https://image.flaticon.com/icons/svg/3329/3329494.svg" alt="Books"><h3>Personal Guidance</h3><h7>We aim in helping the children to get along with others and to develop certain social qualities. At this stage opportunities or facilities are given to pupils for their self expression.</h7></div>
-
 {% endblock %}
+
