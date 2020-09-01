@@ -213,52 +213,42 @@
                                 <label for="username">Username:</label>
                                 <input type="text" name ="username" class="form-control" required/>
                             </div>
-
-                        
-                            <div class="form-group m-0">
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    Submit
-                                </button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
+                        
+            <li>
+                <a class="button" style="vertical-align:middle" href="{{ url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = 1) }}"><span>
+                <i class="fa fa-university" aria-hidden="true"></i>List of Assignment</span>
+                </a>
+            </li>
+            
+            <li>
+                <button class="button" style="vertical-align:middle" href="#"><span>
+                <i class="fa fa-university" aria-hidden="true"></i>Video Call</span>
+                </button>
+            </li>
+        {% endif %}
+        
+        {% if current_user.role.role == "Student" %}
+            
+            <li>
+                <button class="button" style="vertical-align:middle" href="{{ url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = 1) }}"><span>
+                <i class="fa fa-university" aria-hidden="true"></i>List of Assignment</span>
+                </button>
+            </li>
+
+            <li>
+                <button class="button" style="vertical-align:middle" href="#"><span>
+                <i class="fa fa-university" aria-hidden="true"></i>Video Call</span>
+                </button>
+            </li>
+                            
+                    
         </div>
         
-
-        <li>
-            <button class="button" style="vertical-align:middle" href="#"><span>
-            <i class="fa fa-university" aria-hidden="true"></i>Video Call</span>
-            </button>
-        </li>
-
         {% endif %}
-                    
-        {% if current_user.role.role == "Student" %}
-        <li>
-            <button class="button" style="vertical-align:middle" href="{{ url_for('assignments.box', course_title=course_title) }}"><span>
-            <i class="fa fa-university" aria-hidden="true"></i>My Assignments</span>
-            </button>
-        </li>
-
-        <a class="nav-item nav-link " href="#">My Grades</a>
-        <li>
-            <button class="button" style="vertical-align:middle" href="#"><span>
-            <i class="fa fa-university" aria-hidden="true"></i>My Grades</span>
-            </button>
-        </li>
-        {% endif %}
-
-        {% if current_user.role.role == "Guardian" %}
-        <li>
-            <button class="button" style="vertical-align:middle" href="#"><span>
-            <i class="fa fa-university" aria-hidden="true"></i>View Progress Report</span>
-            </button>
-        </li>
-
-        {% endif %}
-
     </ul>
 </div>
             <!-- Main content -->
