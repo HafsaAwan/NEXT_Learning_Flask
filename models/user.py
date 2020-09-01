@@ -16,6 +16,9 @@ class User(UserMixin, BaseModel):
     password = None
     image_path = pw.TextField(null=True)
     role = pw.ForeignKeyField(Role, on_delete='CASCADE')
+    about_me = pw.TextField(null=True)
+    fav_quote=pw.TextField(null=True)
+
 
     @hybrid_property
     def full_image_path(self):

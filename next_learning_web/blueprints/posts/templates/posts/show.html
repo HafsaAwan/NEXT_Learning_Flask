@@ -1,0 +1,165 @@
+{% extends "_layout.html" %}
+{% block header%}
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */ 
+        .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+        }
+        
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {height: 100vh}
+        
+        /* Set gray background color and 100% height */
+        .sidenav {
+        padding-top: 20px;
+        background-color: #f1f1f1;
+        height: 100%;
+        }
+        
+        /* Set black background color, white text and some padding */
+        footer {
+        background-color: #555;
+        color: white;
+        padding: 15px;
+        }
+        
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+        .sidenav {
+            height: auto;
+            padding: 15px;
+        }
+        .row.content {height:auto;} 
+        }
+        .card {
+            position: relative;
+            display: flex;
+            padding: 20px;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 1px solid #d2d2dc;
+            border-radius: 11px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+            box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+        }
+
+        .media img {
+            width: 60px;
+            height: 60px
+        }
+
+        .reply a {
+            text-decoration: none
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="container-fluid text-center">    
+    <div class="row content">
+        <div class="col-sm-2 sidenav">
+            <nav class="nav nav-pills nav-fill flex-column mt-2">
+
+                <a href="{{ url_for('courses.show', course_title=course_title, user_id=current_user.id) }}">Course Page</a>
+
+                <form action="{{url_for('sessions.destroy')}}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="submit" class="btn " value="Logout">
+                </form>
+
+            </nav>
+        </div>
+    
+        <div>
+            <h2>{{course_title}}</h2>
+        </div>
+        
+        {% for info in assignment_week %}
+            <div>
+                <ul>
+                    <li>
+                        Week {{info}}: <a href='{{assignment_week[info].full_file_path}}'>Download Assignment</a>
+                    </li>
+
+                    {% if current_user.role.role == 'Teacher' %}
+                        <ul>
+                            {% for assignment in submitted_assignments %}
+                                <li>
+                                    {{assignment.title}}
+
+                                    <form action = "{{ url_for('assignments.check', course_title=course_name, post_id=post_id, user_id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                            <div class="form-group">
+                                                <select class="form-control" name="grade">
+                                                    {% for grade in grades %}
+                                                        <option value="{{grade.id}}">{{grade.grade}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                    </form>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                    {% if current_user.role.role == 'Student' %}
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Submit Assignment
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Choose File</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action = "{{ url_for('assignments.upload', user_id=current_user.id, course_title=course_title, post_id=post_id) }}" method="POST" enctype="multipart/form-data">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                                            <div class="form-group">
+                                                <label for="title">Title:</label>
+                                                <input type="text" name ="title" class="form-control" required/>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="assignment">Choose Assignment:</label>
+                                                <input type="file" class="form-control-file" name="assignment">
+                                            </div>
+                                            <hr/>
+                                            <div>
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <p>{{submitted_assignments.title}}</p>
+
+                    {% endif %}
+                </ul>
+            </div>
+        {% endfor %}
+        
+
+    </div>
+</div>
+    
+{% endblock %}
