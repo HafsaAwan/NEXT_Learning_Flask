@@ -193,12 +193,11 @@
 
             {% if current_user.role.role == "Guardian" %}
             <li>
-                <a data-toggle="modal" data-target="#childListModal">
-                <i class="fa fa-tachometer" aria-hidden="true"></i> Add Your Child
-                </a>
+                <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal">
+                <i class="fa fa-tachometer" aria-hidden="true"></i> Add Your Child</button>
             </li>
 
-            <div class="modal fade" id="childModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

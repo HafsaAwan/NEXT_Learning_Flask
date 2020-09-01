@@ -55,7 +55,6 @@ def create(course_name,user_id,post_id):
 @login_required
 def show(course_name, user_id, post_id):
     user = User.get_or_none(User.id == user_id)
-    print(user.id)
     current_course = Course.get_or_none(Course.title == course_name)
     thread = Thread.get_or_none(Thread.course_id == current_course.id)
 

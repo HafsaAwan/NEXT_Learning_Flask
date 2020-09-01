@@ -91,8 +91,9 @@
                                 <li>
                                     {{assignment.title}}
 
-                                    <form action = "{{ url_for('assignments.check', course_title=course_name, post_id=post_id, user_id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+                                    <form action = "{{ url_for('assignments.check', course_title=course_title, post_id=post_id, user_id=current_user.id) }}" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                        
                                             <div class="form-group">
                                                 <select class="form-control" name="grade">
                                                     {% for grade in grades %}
