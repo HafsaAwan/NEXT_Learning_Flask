@@ -169,20 +169,25 @@
 
                 {% else %}
                     <h3>List of Child</h3>
-                    {% for child in child_info %}
+                    
+                    
+                    {% for child in new_list %}
+                        {% for key, value in child.items() %}
                         <ul>
                             <li>
-                                {{child.first_name}} {{child.last_name}}
+                                {{key.first_name}} {{key.last_name}}
                             </li>
 
-                            <ul>
-                                {% for info in course_teacher %}
+                            <ul>                             
+                                {% for key2, val in value.items() %}
                                     <li>
-                                        {{info.first_name}} {{info.last_name}} : {{course_teacher[info].title}}
+                                        {{key2.first_name}} {{key2.last_name}} : {{val.title}}
                                     </li>
+
                                 {% endfor %}
                             </ul>
                         </ul>
+                        {% endfor %}
                     {% endfor %}
 
                 {% endif %}

@@ -3,6 +3,9 @@ from models.user import User
 from models.course import Course
 from models.student_course import StudentCourse
 from models.thread import Thread
+from models.post import Post
+from models.assignment import Assignment
+from models.grade import Grade
 from models.comment import Comment
 import peewee as pw
 import re
@@ -44,19 +47,49 @@ def create(course_name,user_id,post_id):
             content = request.form.get("post_content")
             new_post = Post(post_content=content, thread=course_thread,user=user)
             new_post.save()
+
+    return redirect(url_for('courses.show', course_title=course_name, user_id=user_id))
+
+
+@posts_blueprint.route('/<course_name>/<user_id>/<post_id>/assignments', methods=['GET'])
+@login_required
+def show(course_name, user_id, post_id):
+    user = User.get_or_none(User.id == user_id)
+    print(user.id)
+    current_course = Course.get_or_none(Course.title == course_name)
+    thread = Thread.get_or_none(Thread.course_id == current_course.id)
+
+    if user.role.role == 'Teacher':
+        submitted_assignments = []
+        for assignment in Assignment.select().where(Assignment.post_id == post_id):
+            submitted_assignments.append(assignment)
+
+    if user.role.role == 'Student':
+        info = StudentCourse.get_or_none(StudentCourse.student_id == user.id, StudentCourse.course_name_id == current_course.id)
+        submitted_assignments = Assignment.get_or_none(Assignment.info_id == info.id)
+
+    assignment_post = []
+    week_num = []
+    i = 1
+
+    for post in Post.select().where(Post.thread_id == thread.id):
+        if post.file_path:
+            assignment_post.append(post)
+            week_num.append(i)
+
+            i += 1
+
+    grades = []
+    for grade in Grade.select():
+        grades.append(grade)
+
+
+    assignment_week = dict(zip(week_num, assignment_post))
+    print(str(assignment_week))
+
+    # for assignment in Assignment.select().where()
     
-  
-    # course_posts = []
 
-    # for post in Post.select().where(Post.thread_id == course_thread):
-    #     course_posts.append(post)
-
-    # course_posts.reverse()
-
-    # return render_template('courses/show.html', course_title=course_name, course_posts=course_posts, id=id)
-    return redirect(url_for('courses.show',course_title=course_name, user_id=user_id))
-
-@posts_blueprint.route('/assignments', methods=['POST'])
-def show(course_name,user_id,post_id):
-    pass
-         
+    return render_template('posts/show.html', course_title=course_name, user_id=user_id, post_id=post_id, assignment_week=assignment_week, submitted_assignments=submitted_assignments, grades=grades)
+        
+    # is_student= user.role == "student"

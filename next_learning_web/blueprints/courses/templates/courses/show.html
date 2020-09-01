@@ -126,12 +126,13 @@
                                 </div>
                             </div>
                         </div>
-                    
+                        
+                        <a class='nav-item nav-link' href="{{ url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = 1) }}">List of Assignments</a>
                         <a class="nav-item nav-link " href="#">Video Call</a>
                     {% endif %}
                     
                     {% if current_user.role.role == "Student" %}
-                        <a class="nav-link" href="{{ url_for('assignments.box', course_title=course_title) }}">My Assignments</a>
+                        <a class='nav-item nav-link' href="{{ url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = 1) }}">List of Assignments</a>
                         
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
