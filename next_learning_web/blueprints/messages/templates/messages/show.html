@@ -44,120 +44,53 @@
             <!-- LEFT SIDEBAR -->
             <div class="col-sm-2 sidenav">
                 
-                <nav class="nav nav-pills nav-fill flex-column mt-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                        List of Students
-                    </button>
-
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Students in the {{course_title}} Course</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <ul>
-                                        {% for student in students %}
-                                            <li>
-                                                {{student.first_name}} {{student.last_name}}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {% if current_user.role.role == "Teacher" %}
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#studentCourseModal">
-                            Add Students
-                        </button>
-                        
-                        <!-- Modal -->
-                        <div class="modal fade" id="studentCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add A Student Into The {{course_title}} Course</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action = "{{ url_for('courses.enroll', course_title=course_title) }}" method="POST">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
-                                            <div class="form-group">
-                                                <label for="username">Username:</label>
-                                                <input type="text" name ="username" class="form-control" required/>
-                                            </div>
-
-                                        
-                                            <div class="form-group m-0">
-                                                <button type="submit" class="btn btn-primary btn-block">
-                                                    Submit
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <a class="nav-item nav-link " href="#">Upload Assignment</a>
-                        <a class="nav-item nav-link " href="#">Video Call</a>
-                    {% endif %}
-                    
-                    {% if current_user.role.role == "Student" %}
-                        <a class="nav-link" href="{{ url_for('assignments.box', course_title=course_title) }}">My Assignments</a>
-                        
-                        <a class="nav-item nav-link " href="#">My Grades</a>
-
-                    {% endif %}
-
-                    {% if current_user.role.role == "Guardian" %}
-                        <a class="nav-item nav-link " href="#">View Progress Report</a>
-
-                    {% endif %}
-
-
-                    <form action="{{url_for('sessions.destroy')}}" method="POST">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                        <input type="submit" class="btn " value="Logout">
-                    </form>
-                </nav>
+                
             </div>
             <!-- LEFT SIDEBAR ENDS -->
             <!-- Main content -->
-            <div class="container col-sm-8 p-2" style="box-sizing: border-box;">
-                
-                <div class="card">
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <div class="card" style="width: 100%; border-bottom: none;">
+            <div class="container col-sm-8 p-2" style="box-sizing: border-box; ">
+                <!-- FORM to SEND MESSAGE -->
+                <div class="card" style="width: 100%; border-bottom: none;">
                                 
-                                <div class="card-body">
-                                  <h5 class="card-title text-center mb-5">Inbox </h5>
-                                    <p class="card-text">
-                                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                        
-                                            <textarea name="post_content" class="form-control mr-2 ml-3" placeholder="Write an update" rows="4" style="border: 1px solid gray;"></textarea>
-                                                <br>
-                                            <button type="submit" class="btn btn-primary float-right" >Post</button>
-                                        </form>
-                                    </p>
-                                  
-                                </div>
-                            </div>
+                    <div class="card-body">
+                      <h5 class="card-title text-center mb-5">Send Message </h5>
+                        <p class="card-text">
+                            <form action="{{url_for('messages.create', to_user=to_user)}}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             
+                                <input name="message" class="form-control mr-2 ml-3" placeholder="What's on your mind?" rows="4" style="border: 1px solid gray;"></input>
+                                    <br>
+                                <button type="submit" class="btn btn-primary float-right" >Send</button>
+                            </form>
+                        </p>
+                      
+                    </div>
+                </div>
+                <!-- FORM to SEND MESSAGE ENDS-->
+                <!-- Show messages -->
+                <div class="card" style="overflow: scroll; height: 50%;">
+                    <div class="row">
+                        <div class="col-md-12" >
+                            {% for msg in to_user_msgs %}
+                                <div class="media" > 
+                                    <img class="mr-2 ml-3 rounded-circle d-inline-block align-top" alt="Bootstrap Media Preview" src="{{msg.from_user.full_image_path}}" width="45" height="45"/>
+                                    <div class="media-body text-left">
+                                        <div class="row">
+                                            <div class="col-8 d-flex">
+                                                <h5>{{msg.from_user.first_name}} {{msg.from_user.last_name}}</h5> <span class="prettydate ml-3">{{msg.created_at}}</span>
+                                            </div>                               
+                                        </div> 
+                                        <p style="color: black;">{{msg.message}}</p>    
+                                    </div>
+                                </div>
+                            <!-- <li>{{msg.message}} </li> -->
+                            {% endfor %}
+                            
+                             
                         </div>
                     </div>
                 </div>
+                
             </div>
             
             

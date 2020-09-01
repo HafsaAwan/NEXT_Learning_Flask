@@ -8,5 +8,6 @@ from flask_login import UserMixin
 
 class Message(BaseModel):
     message = pw.TextField(null=False)
-    guardian = pw.ForeignKeyField(User, backref="my_messages", on_delete='CASCADE')
-    teacher = pw.ForeignKeyField(User, backref="my_messages", on_delete='CASCADE')
+    from_user = pw.ForeignKeyField(User, backref="my_messages", on_delete='CASCADE')
+    to_user = pw.ForeignKeyField(User, backref="my_messages", on_delete='CASCADE')
+    

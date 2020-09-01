@@ -38,10 +38,10 @@ def create():
     new_course = Course(title=params.get("course_title"), teacher_id=current_user.id)
 
     if new_course.save():
-        print("new_course.id",new_course.id)
+        # print("new_course.id",new_course.id)
         new_thread = Thread(course = new_course.id)
         new_thread.save()
-        print("new thread", new_thread.id)
+        # print("new thread", new_thread.id)
         flash("Successfully Created a Course!","success")
         return redirect(url_for("users.show", username=current_user.username, user_id=current_user.id))  # then redirect to profile page
     else:

@@ -24,7 +24,7 @@ def new():
 @users_blueprint.route('/', methods=['POST'])
 def create():
     params = request.form
-    print(params.get("role"))
+    # print(params.get("role"))
     
     new_user = User(first_name=params.get("first_name"), last_name=params.get("last_name"),username=params.get("username"), email=params.get("email"), password=params.get("password"), role = params.get("role"))
     
@@ -46,7 +46,7 @@ def show(username):
 
     # get the courses taught by the current teacher
     for course in Course.select().where(Course.teacher_id == current_user.id):
-        print(course)
+        # print(course)
         teacher_courses.append(course)
 
     student_info = []
@@ -94,7 +94,7 @@ def show(username):
 
     # course_teacher = {teacher_info[i].first_name + " " + teacher_info[i].last_name: course_info[i].title for i in range(len(teacher_info))}
     course_teacher = dict(zip(teacher_info, course_info)) 
-    print(str(course_teacher))
+    # print(str(course_teacher))
     
     
 

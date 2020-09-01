@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        <li><a class="nav-item nav-link" href="{{url_for('messages.show',to_user = current_user.id)}}">My Messages</a></li>
                     {% endif %}
                     
                     {% if current_user.role.role == "Student" %}
@@ -90,7 +90,7 @@
                         <a class="nav-item nav-link " href="#">My Grades</a>
 
                     {% endif %}
-
+                        <!-- guardian -->
                     {% if current_user.role.role == "Guardian" %}
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#childModal">
                             Add Your Child
@@ -125,19 +125,20 @@
                             </div>
                         </div>
                                     
-                        <a class="nav-item nav-link " href="#">View Progress Report</a>
+                        <li><a class="nav-item nav-link " href="#">View Progress Report</a></li>
+                        <li><a class="nav-item nav-link" href="#">My Messages</a></li>
+
 
                     {% endif %}
                     
-                    <a class="nav-item nav-link" href="{{url_for('messages.show')}}">My Messages</a>
-
+                    
                     <form action="{{url_for('sessions.destroy')}}" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <input type="submit" class="btn " value="Logout">
                     </form>
                 </nav>
             </div>
-
+            <!-- main content -->
             <div class="col-sm-8 text-left"> 
                 <div>
                     <h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
@@ -171,6 +172,7 @@
                 
                 {% else %}
                     <h3>List of Child</h3>
+                    <p>Contact course teacher by clicking the teacher name***</p>
                     {% for child in child_info %}
                         <ul>
                             <li>
@@ -180,8 +182,10 @@
                             <ul>
                                 {% for info in course_teacher %}
                                     <li>
-                                        {{info.first_name}} {{info.last_name}} : {{course_teacher[info].title}}
+                                       
+                                        <a href="{{url_for('messages.show', to_user = info.id)}}"> {{info.first_name}} {{info.last_name}}</a> : {{course_teacher[info].title}}
                                     </li>
+                                   
                                 {% endfor %}
                             </ul>
                         </ul>
@@ -189,7 +193,8 @@
 
                 {% endif %}
                 <hr>
-                
+ 
+                    
                 <h3>Test</h3>
                 <p>Lorem ipsum...</p>
             </div>
@@ -247,3 +252,36 @@
 
 {% endblock %}
 
+<!-- if needed -->
+<!-- <li> -->
+    <!-- Button trigger modal to send message -->
+    <!-- <button type="button" class="btn btn-link" data-toggle="modal" data-target="#sendMessageModal"> {{info.first_name}} {{info.last_name}}</button> : {{course_teacher[info].title}} -->
+<!-- </li> -->
+<!-- Modal to send message -->
+<!-- <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Send Message:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        
+        <form action="{{url_for('messages.create', to_user = info.id)}}" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <div class="modal-body">
+                <input name="message" class="form-control mr-2 ml-3" placeholder="What's on your mind?" rows="4" style="border: 1px solid gray;"></input>
+                    <br>
+                
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary float-right" >Send</button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div> -->
+<!--Modal to send message END  -->

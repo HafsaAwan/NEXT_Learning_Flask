@@ -47,7 +47,7 @@ def upload(id, course_id):
 
             # get path to image on S3 bucket using function in helper.py
             file_path = upload_file_to_s3(file, user.username)
-            print(file_path)
+            # print(file_path)
             
             new_assignment = Assignment(title=title, info_id=info.id, file_path=file_path)
             
