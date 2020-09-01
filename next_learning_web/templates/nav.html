@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark" style="padding-top: 0; padding-bottom: 0;">
-    <a class="navbar-brand" style='width: 10%; height: 10%; box-sizing: border-box; padding: 0;'  href="{{ url_for('home') }}"><img src="https://i.imgur.com/wSW2SV6.png" alt="" width="100%" height="100%"></a>
+    <a class="navbar-brand" style='width: 120px; height: 10%; box-sizing: border-box; padding: 0;'  href="{{ url_for('home') }}"><img src="https://i.imgur.com/wSW2SV6.png" alt="" width="100%" height="100%"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -30,25 +30,25 @@
                     </div>
                 </li>
                 
-                <li class="nav-item">
+                <li class="navbar-nav">
                     <!-- <a class="btn btn-dark" href="{{ url_for('sessions.destroy')}}" style="margin-top:3px;">Logout</a> -->
                     <form action="{{url_for('sessions.destroy')}}" method="POST">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                        <input type="submit" class="btn " value="Logout">
+                        <input type="submit" class="btn btn-outline-danger" value="Logout"style="margin:10px">
                     </form>
                 </li>
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link mt-1" href="{{url_for('sessions.new')}}">Sign In</a>
+                <li class="navbar-nav">
+                    <a class="btn btn-outline-light" href="{{url_for('sessions.new')}}">Sign In</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link mt-1" href="{{url_for('users.new')}}">Sign Up</a>
+                <li class="navbar-nav">
+                    <a class="btn btn-outline-light" href="{{url_for('users.new')}}">Sign Up</a>
                 </li>
                 
                 
                 {% endif %}
-                <li class="nav-item">
-                    <a class="btn btn-dark" href="{{ url_for('home')}}" style="margin-top:3px;">Home</a>
+                <li class="navbar-nav">
+                    <a class="btn btn-dark" href="{{ url_for('home')}}" style="margin:10px;">Home</a>
                 </li>
             </ul>
         </div>
