@@ -7,7 +7,7 @@ body {
 
 footer {
   font-size: 11px;
-  position: absolute;
+  position: fixed;
   bottom: 10px;
   left: 0;
   right: 0;
@@ -73,4 +73,16 @@ footer a {
 
 .grid-container img{
   height: 60px;
+}
+
+input[type=text] {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid lightgray;
+}
+
+input[type=password] {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid lightgray;
 }
