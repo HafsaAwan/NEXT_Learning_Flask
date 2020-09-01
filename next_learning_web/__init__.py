@@ -23,6 +23,7 @@ app.register_blueprint(courses_blueprint, url_prefix="/courses")
 app.register_blueprint(posts_blueprint, url_prefix="/posts")
 app.register_blueprint(messages_blueprint, url_prefix="/messages")
 
+
 @app.errorhandler(500)
 def internal_server_error(e):
     return render_template('500.html'), 500
@@ -31,3 +32,7 @@ def internal_server_error(e):
 @app.route("/")
 def home():
     return render_template('home.html')
+
+@app.route("/teaminfo")
+def teaminfo():
+    return render_template('teaminfo.html')

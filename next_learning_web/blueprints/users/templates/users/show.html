@@ -1,144 +1,244 @@
 {% extends "_layout.html" %}
 {% block header%}
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */ 
-        .navbar {
-        margin-bottom: 0;
-        border-radius: 0;
-        }
-        
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 100vh}
-        
-        /* Set gray background color and 100% height */
-        .sidenav {
+<style>
+
+    .sidebar {
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #1a1a1a;
+        color: #fff;
+    }
+
+    .content-container {
         padding-top: 20px;
-        background-color: #f1f1f1;
+    }
+
+    .sidebar-logo {
+        padding: 10px 15px 10px 30px;
+        font-size: 20px;
+        background-color: #2574A9;
+    }
+
+    .sidebar-navigation {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        position: relative;
+    }
+
+    .sidebar-navigation li {
+        background-color: transparent;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        line-height: 20px;
+    }
+
+    /* .sidebar-navigation li a {
+        padding: 10px 15px 10px 30px;
+        display: block;
+        color: #fff;
+    } */
+
+    .sidebar-navigation li .fa {
+        margin-right: 10px;
+    }
+
+    /* .sidebar-navigation li a:active,
+    .sidebar-navigation li a:hover,
+    .sidebar-navigation li a:focus {
+        text-decoration: none;
+        outline: none;
+    } */
+
+    .sidebar-navigation li::before {
+        background-color: #2574A9;
+        position: absolute;
+        content: '';
         height: 100%;
-        }
-        
-        /* Set black background color, white text and some padding */
-        footer {
-        background-color: #555;
-        color: white;
-        padding: 15px;
-        }
-        
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-        .sidenav {
-            height: auto;
-            padding: 15px;
-        }
-        .row.content {height:auto;} 
-        }
+        left: 0;
+        top: 0;
+        -webkit-transition: width 0.2s ease-in;
+        transition: width 0.2s ease-in;
+        width: 3px;
+        z-index: -1;
+    }
+
+    .sidebar-navigation li:hover::before {
+        width: 100%;
+    }
+
+    .sidebar-navigation .header {
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: #151515;
+        padding: 10px 15px 10px 30px;
+    }
+
+    .sidebar-navigation .header::before {
+        background-color: transparent;
+    }
+
+    .content-container {
+        padding-left: 220px;
+    }
+    .button {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 14px;
+        padding: 10px;
+        width: 220px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}  
     </style>
 {% endblock %}
 {% block content %}
 			
-    <div class="container-fluid text-center">    
-        <div class="row content">
-            <div class="col-sm-2 sidenav">
-                <div class="img bg-wrap text-center py-4" style="background-image: url(images/bg_1.jpg);">
-                    <div class="user-logo">
-                        <div class="img" style="background-image: url({{current_user.full_image_path}});"></div>
-                        <h3>{{current_user.username}}</h3>
-                        <h4>{{current_user.role.role}}</h4>
+<div class="row content">
+    <div class="col-sm-2 sidebar">
+    <div class="sidebar-logo d-flex flex-column align-items-center">
+        <img src='{{current_user.full_image_path}}' width='150' height='150' class='border rounded-circle'>
+        <h4>{{current_user.username}}</h4>
+        <h5>{{current_user.role.role}}</h5>
+    </div>
+    <ul class="sidebar-navigation">
+        <li>
+            <button class="button" style="vertical-align:middle" href="{{ url_for('users.edit', id=current_user.id) }}"><span>
+            <i class="fa fa-university" aria-hidden="true"></i> Edit Profile</span>
+            </button>
+        </li>
+        <hr>
+        {% if current_user.role.role == "Teacher" %}
+
+        <li>
+            <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
+            <i class="fa fa-university" aria-hidden="true"></i> Create a course</span>
+            </button>
+        </li>
+        
+
+        <!-- Modal -->
+        <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Course Creation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action = "{{ url_for('courses.create') }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                            <div class="form-group">
+                                <label for="course_title">Course Title:</label>
+                                <input type="text" name ="course_title" class="form-control" required/>
+                            </div>
+
+                            <div class="form-group m-0">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <nav class="nav nav-pills nav-fill flex-column mt-2">
-                    <a class="nav-item nav-link" href="{{ url_for('users.edit', id=current_user.id) }}">Edit Profile</a>
-                    {% if current_user.role.role == "Teacher" %}
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#courseModal">
-                            Create a Course
-                        </button>
-                        
-                        <!-- Modal -->
-                        <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Course Creation</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action = "{{ url_for('courses.create') }}" method="POST">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-    
-                                            <div class="form-group">
-                                                <label for="course_title">Course Title:</label>
-                                                <input type="text" name ="course_title" class="form-control" required/>
-                                            </div>
-    
-                                            <div class="form-group m-0">
-                                                <button type="submit" class="btn btn-primary btn-block">
-                                                    Submit
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <li><a class="nav-item nav-link" href="{{url_for('messages.show',to_user = current_user.id)}}">My Messages</a></li>
-                    {% endif %}
-                    
-                    {% if current_user.role.role == "Student" %}
-
-                        <a class="nav-item nav-link " href="#">My Grades</a>
-
-                    {% endif %}
-                        <!-- guardian -->
-                    {% if current_user.role.role == "Guardian" %}
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#childModal">
-                            Add Your Child
-                        </button>
-
-                        <div class="modal fade" id="childModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action = "{{ url_for('users.register', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                            <div class="form-group">
-                                                <label for="username">Username:</label>
-                                                <input type="text" name ="username" class="form-control" required/>
-                                            </div>
-
-                                            <hr/>
-
-                                            <div>
-                                                <button type="submit" class="btn btn-primary">Submit</button>
-                                            </div>
-                            
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                                    
-                        <li><a class="nav-item nav-link " href="#">View Progress Report</a></li>
-                        <li><a class="nav-item nav-link" href="#">My Messages</a></li>
-
-
-                    {% endif %}
-                    
-                    
-                    <form action="{{url_for('sessions.destroy')}}" method="POST">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                        <input type="submit" class="btn " value="Logout">
-                    </form>
-                </nav>
             </div>
-            <!-- main content -->
+        </div>
+
+        {% endif %}
+                   
+                    
+        {% if current_user.role.role == "Student" %}
+
+            <li>
+                <a href="#">
+                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades
+                </a>
+            </li>
+
+        {% endif %}
+
+        <!-- guardian -->
+        {% if current_user.role.role == "Guardian" %}
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#childModal">
+                Add Your Child
+            </button>
+
+            <div class="modal fade" id="childModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action = "{{ url_for('users.register', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <div class="form-group">
+                                    <label for="username">Username:</label>
+                                    <input type="text" name ="username" class="form-control" required/>
+                                </div>
+
+                                <hr/>
+
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                        
+            <a class="nav-item nav-link " href="#">View Progress Report</a>
+
+        {% endif %}
+                    
+        <li>
+            <button class="button" style="vertical-align:middle"><span> 
+            <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+            </button>
+        </li>
+    </ul>
+</div>
+
             <div class="col-sm-8 text-left"> 
                 <div>
                     <h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
@@ -181,11 +281,11 @@
 
                             <ul>
                                 {% for info in course_teacher %}
-                                    <li>
-                                       
-                                        <a href="{{url_for('messages.show', to_user = info.id)}}"> {{info.first_name}} {{info.last_name}}</a> : {{course_teacher[info].title}}
-                                    </li>
-                                   
+                                    {% for details in info %}
+                                        <li>
+                                            {{details.first_name}} {{details.last_name}} : {{course_teacher[details].title}}
+                                        </li>
+                                    {% endfor %}
                                 {% endfor %}
                             </ul>
                         </ul>
@@ -198,57 +298,9 @@
                 <h3>Test</h3>
                 <p>Lorem ipsum...</p>
             </div>
-            <!-- RIGHT SIDEBAR -->
-            <div class="col-sm-2 sidenav">
-
-                <div class="card">
-                    <div class="card-body">
-                      <h5 class="card-title">Card title</h5>
-                      <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                      <a href="#" class="card-link">Card link</a>
-                      <a href="#" class="card-link">Another link</a>
-                <div class="card" >
-                    <div class="card-body">
-                        {% if current_user.role_id == 2 %}
-                      <h5 class="card-title">Courses</h5>
-                        <p class="card-text">  
-                                <ul style="list-style-type: none; margin: 0; padding: 0;">
-                                    {% for course in teacher_courses %}
-                                        <li>
-                                            <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
-                                            
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-
-                            {% else %}
-                                <ul style="list-style-type: none; margin: 0; padding: 0;">
-                                    {% for course in student_courses %}
-                                        <li>
-                                            <a href="{{url_for('courses.show',course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="well card">
-                    <div class="card-body">
-                        <h5>Upcoming Events</h5>
-                         
-                        <p>No new events</p>
-                        <p></p>
-                    </div>
-                    
-                </div>
-            </div>
         </div>
     </div>
-    <!-- RIGHT SIDEBAR END -->
-
+    
 
 {% endblock %}
 
