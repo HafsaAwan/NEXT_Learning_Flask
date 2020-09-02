@@ -16,9 +16,9 @@ class Config(object):
     S3_LOCATION = 'http://{}.s3.amazonaws.com/'.format(S3_BUCKET)
 
     ## twilio related keys
-    twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-    twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')
-    twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
+    TWILIO_ACCOUNT_SID = os.environ.get('TWILIO_ACCOUNT_SID')
+    TWILIO_API_KEY_SID = os.environ.get('TWILIO_API_KEY_SID')
+    TWILIO_API_KEY_SECRET = os.environ.get('TWILIO_API_KEY_SECRET')
 
 
 class ProductionConfig(Config):

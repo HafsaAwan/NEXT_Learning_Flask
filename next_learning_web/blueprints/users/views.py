@@ -7,7 +7,7 @@ import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
 from next_learning_web.util.helpers import upload_file_to_s3
-from werkzeug import secure_filename
+# from werkzeug import secure_filename
 
 import peewee as pw
 
@@ -24,7 +24,7 @@ def new():
 @users_blueprint.route('/', methods=['POST'])
 def create():
     params = request.form
-    print(params.get("role"))
+    # print(params.get("role"))
     
     new_user = User(first_name=params.get("first_name"), last_name=params.get("last_name"),username=params.get("username"), email=params.get("email"), password=params.get("password"), role = params.get("role"))
     
@@ -46,7 +46,7 @@ def show(username):
 
     # get the courses taught by the current teacher
     for course in Course.select().where(Course.teacher_id == current_user.id):
-        print(course)
+        # print(course)
         teacher_courses.append(course)
 
     student_info = []
@@ -166,10 +166,13 @@ def update(id):
             user.email = params.get("email")
 
             password = params.get("password")
+            user.about_me = params.get("about")
+            user.fav_quote = params.get("quote")
 
             if len(password) > 0:
                 user.password = password
             
+
             if user.save():
                 flash("Successfully updated user!","success")
                 return redirect(url_for("users.show", username=user.username))
@@ -197,7 +200,7 @@ def upload(id):
                 return redirect(url_for("users.edit", id=id))
 
             file = request.files["profile_image"]
-            file.filename = secure_filename(file.filename)
+            # file.filename = secure_filename(file.filename)
             image_path = upload_file_to_s3(file,user.username )
             
             user.image_path = image_path

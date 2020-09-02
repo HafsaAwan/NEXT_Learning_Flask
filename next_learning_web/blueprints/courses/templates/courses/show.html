@@ -16,7 +16,7 @@
     .sidebar-logo {
         padding: 10px 15px 10px 30px;
         font-size: 20px;
-        background-color: #2574A9;
+        background-color: #8a483b;
     }
 
     .sidebar-navigation {
@@ -121,30 +121,30 @@
   opacity: 1;
   right: 0;
 }  
-        .card {
-            position: relative;
-            display: flex;
-            padding: 20px;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 1px solid #d2d2dc;
-            border-radius: 11px;
-            -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
-            -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
-            box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
-        }
+.card {
+    position: relative;
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #d2d2dc;
+    border-radius: 11px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgb(249, 249, 250);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(212, 182, 212, 1);
+    box-shadow: 0px 0px 5px 0px rgb(161, 163, 164)
+}
 
-        .media img {
-            width: 60px;
-            height: 60px
-        }
+.media img {
+    width: 60px;
+    height: 60px
+}
 
-        .reply a {
-            text-decoration: none
-        }
+.reply a {
+    text-decoration: none
+}
     </style>
 {% endblock %}
 {% block content %}
@@ -152,9 +152,9 @@
 <div class="row content">
     <div class="col-sm-2 sidebar">
     <div class="sidebar-logo d-flex flex-column align-items-center">
-        <img src='{{current_user.full_image_path}}' width='150' height='150' class='border rounded-circle'>
-        <h4>{{current_user.username}}</h4>
-        <h5>{{current_user.role.role}}</h5>
+        <img src='{{current_user.full_image_path}}' width='120' height='120' class='border rounded-circle'>
+        <h4  style="color: white;"><a href="{{url_for('users.show',username=current_user.username)}}">@{{current_user.username}}</a></h4>
+        
     </div>
     <ul class="sidebar-navigation">
         <hr>           
@@ -177,7 +177,7 @@
                     <div class="modal-body">
                         <ul>
                             {% for student in students %}
-                                <li>
+                                <li style="color: black;">
                                     {{student.first_name}} {{student.last_name}}
                                 </li>
                             {% endfor %}
@@ -213,6 +213,11 @@
                                 <label for="username">Username:</label>
                                 <input type="text" name ="username" class="form-control" required/>
                             </div>
+                            <div class="form-group m-0">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    Submit
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -226,9 +231,9 @@
             </li>
             
             <li>
-                <button class="button" style="vertical-align:middle" href="#"><span>
+                <a class="button" style="vertical-align:middle" href="{{url_for('conferences.index')}}"><span>
                 <i class="fa fa-university" aria-hidden="true"></i>Video Call</span>
-                </button>
+                </a>
             </li>
         {% endif %}
         
@@ -258,10 +263,10 @@
                     <div class="row">
                         <div class="col-md-12">
 
-                            <div class="card" style="width: 100%; border-bottom: none; background-color: lightblue;">
+                            <div class="card text-white bg-secondary" style="width: 100%; border-bottom: none;">
                                 
                                 <div class="card-body">
-                                  <h5 class="card-title text-center mb-5"><a href="{{url_for('courses.show',course_title=course_title, user_id=current_user.id)}}">{{course_title}}</a> Class Forum </h5>
+                                  <h5 class="card-title text-center mb-5 text-white"><a href="{{url_for('courses.show',course_title=course_title, user_id=current_user.id)}}" style="color: white; text-decoration: underline;">{{course_title}}</a> Class Forum </h5>
                                     <p class="card-text">
                                         <form action="{{ url_for('posts.create', course_name=course_title, user_id=current_user.id, post_id=1) }}" method="POST" enctype="multipart/form-data">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

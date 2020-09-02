@@ -11,7 +11,7 @@ import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
 from next_learning_web.util.helpers import upload_file_to_s3
-from werkzeug import secure_filename
+# from werkzeug import secure_filename
 from models.post import Post
 
 posts_blueprint = Blueprint('posts',
@@ -38,7 +38,7 @@ def create(course_name,user_id,post_id):
     else:
         if "assignment" in request.files:
             file = request.files["assignment"]
-            file.filename = secure_filename(file.filename)
+            # file.filename = secure_filename(file.filename)
             file_path = upload_file_to_s3(file, user.username)
 
             content = request.form.get("post_content")
