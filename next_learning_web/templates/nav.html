@@ -4,12 +4,17 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     
-    <div class="container-fluid-nav" style= "margin:auto;color:white; align-items: center; justify-items: center;">Remote Learning Taken Further</div>
+    <div class="container-fluid-nav" style= "margin:auto;color:white; align-items: center; justify-items: center;">
+        Remote Learning Taken Further
+    </div>
     
-        {% if current_user.is_authenticated %}
+    
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+
+            {% if current_user.is_authenticated %}
+
                 <li class="nav-item">
                 <!-- User Profile image, rounded, link to edit profile  -->
                     
@@ -23,10 +28,10 @@
                             <a class="dropdown-item" href="{{url_for('users.edit', id=current_user.id) }}">
                                 Setting
                             </a>
-  
+
                         </div>
                         
-                          
+                            
                     </div>
                 </li>
                 
@@ -37,19 +42,22 @@
                         <input type="submit" class="btn btn-outline-danger" value="Logout"style="margin:10px">
                     </form>
                 </li>
-                {% else %}
-                <li class="navbar-nav">
-                    <a class="btn btn-outline-light" href="{{url_for('sessions.new')}}">Sign In</a>
+            {% else %}
+
+                <li class="navbar-nav" style="margin: 10px;">
+                    <a class="btn btn-dark" href="{{url_for('sessions.new')}}">Sign In</a>
                 </li>
-                <li class="navbar-nav">
-                    <a class="btn btn-outline-light" href="{{url_for('users.new')}}">Sign Up</a>
+                <li class="navbar-nav"style="margin: 10px;">
+                    <a class="btn btn-dark" href="{{url_for('users.new')}}">Sign Up</a>
                 </li>
-                
-                
-                {% endif %}
-                <li class="navbar-nav">
-                    <a class="btn btn-dark" href="{{ url_for('home')}}" style="margin:10px;">Home</a>
-                </li>
-            </ul>
-        </div>
+            
+            
+            {% endif %}
+            
+            <li class="navbar-nav">
+                <a class="btn btn-dark" href="{{ url_for('home')}}" style="margin:10px;">Home</a>
+            </li>
+        </ul>
+    </div>
+    
 </nav>

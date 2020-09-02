@@ -66,14 +66,14 @@
   100% {margin-top:-270px;}
 }
 
-p {
+/* p {
   position:fixed;
   width:100%;
   bottom:30px;
   font-size:12px;
   color:#999;
   margin-top:200px;
-}
+} */
   .grid-container {
   display: grid;
   grid-template-columns: auto auto auto auto;
@@ -108,6 +108,10 @@ p {
   width: 18rem;
 }
 
+.lead {
+  font-size: px;
+}
+
 footer {
     color: white;
 }
@@ -116,22 +120,97 @@ footer a{
   color:gray;
 }
 
+.fade-in {
+  animation: fadeIn ease 8s;
+  -webkit-animation: fadeIn ease 10s;
+  -moz-animation: fadeIn ease 10s;
+  -o-animation: fadeIn ease 10s;
+  -ms-animation: fadeIn ease 10s;
+}
+@keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-moz-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-webkit-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-o-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
+@-ms-keyframes fadeIn {
+  0% {opacity:0;}
+  100% {opacity:1;}
+}
+
 
     </style>
 {% endblock %}
 
 {% block content %}
+<div class="jumbotron" style="background: none;font-family: 'Bebas Neue', cursive; color: white;">
+    <h1 class="display-4" style="color: white;font-family: 'Bebas Neue', cursive; font-size: 120px;">NEXT LEARNING</h1>
+    <hr class="my-4" style="border:none; height: 10px;">
+  <div id="container">
+      Transforming 
+      <div id=flip >
+        <div><div>Classrooms</div></div>
+        <div><div>Lifestyle</div></div>
+        <div><div>Everything</div></div>
+      </div>
+      In Education
+  </div>
+  <a type="button" class="btn btn-outline-light btn-lg" style="transform: translateY(-70px); font-size: 25x;" href="{{ url_for('teaminfo')}}">About Us</a>
+</div>
 
-<div id=container>
+
+<div class="grid-container fade-in" style="margin-top: 200px;">
+  <div class="card">
+    <img src="https://image.flaticon.com/icons/svg/2883/2883939.svg" alt="Avatar" style="width:100%">
+        <h4><b>Certified Teachers</b></h4>
+        <div class="detail">Our educators are globally certified professionals in supporting the academic achievement of our students. Every Next Learning educators must be certified to teach in our school.</div>
+  </div>
+  <div class="card">
+    <img src="https://image.flaticon.com/icons/svg/524/524569.svg" alt="Avatar" style="width:100%">
+      <div class="container">
+        <h4><b>Guardian Features</b></h4>
+        <div class="detail">Student's activities and work progress can be monitored through the classroom sessions and in-built features to provide improved security assurance for guardians</div>
+      </div>
+  </div>
+  <div class="card">
+    <img src="https://image.flaticon.com/icons/svg/3100/3100752.svg" alt="Avatar" style="width:100%">
+      <div class="container">
+        <h4><b>Classroom Experience</b></h4>
+        <div class="detail">The course materials and activities may be accessed from any computer whilst incorperating the ideal values of an "online physical classroom" environment.</div>
+      </div>
+  </div>
+  <div class="card">
+    <img src="https://image.flaticon.com/icons/svg/3329/3329494.svg" alt="Avatar" style="width:100%">
+    <div class="container">
+      <h4><b>Personal Guidance</b></h4>
+      <div class="detail">We aim in helping the children to get along with others and to develop certain social qualities. At this stage opportunities or facilities are given to pupils for their self expression.</div>
+    </div>
+  </div>
+</div>
+<!-- <div id=container>
   Transforming 
-  <div id=flip>
+  <div id=flip >
     <div><div>Classrooms</div></div>
     <div><div>Lifestyle</div></div>
     <div><div>Everything</div></div>
   </div>
   In Education
 
-  <div class="grid-container">
+  <div class="grid-container" style="margin-top: 100px;">
       <div class="card">
         <img src="https://image.flaticon.com/icons/svg/2883/2883939.svg" alt="Avatar" style="width:100%">
             <h4><b>Certified Teachers</b></h4>
@@ -158,8 +237,8 @@ footer a{
           <div class="detail">We aim in helping the children to get along with others and to develop certain social qualities. At this stage opportunities or facilities are given to pupils for their self expression.</div>
         </div>
       </div>
-</div>
-
+  </div>
+</div> -->
 {% endblock %}
 
 <!-- <footer>
