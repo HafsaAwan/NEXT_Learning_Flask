@@ -213,10 +213,11 @@
                                 <label for="username">Username:</label>
                                 <input type="text" name ="username" class="form-control" required/>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
+        </div>
                         
             <li>
                 <a class="button" style="vertical-align:middle" href="{{ url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = 1) }}"><span>
@@ -262,7 +263,7 @@
                                 <div class="card-body">
                                   <h5 class="card-title text-center mb-5"><a href="{{url_for('courses.show',course_title=course_title, user_id=current_user.id)}}">{{course_title}}</a> Class Forum </h5>
                                     <p class="card-text">
-                                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST" enctype="multipart/form-data">
+                                        <form action="{{ url_for('posts.create', course_name=course_title, user_id=current_user.id, post_id=1) }}" method="POST" enctype="multipart/form-data">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                                         
                                             <textarea name="post_content" class="form-control mr-2 ml-3" placeholder="Write an update" rows="4" style="border: 1px solid gray;"></textarea>

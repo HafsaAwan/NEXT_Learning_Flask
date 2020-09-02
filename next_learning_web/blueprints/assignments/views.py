@@ -73,14 +73,8 @@ def upload(user_id, course_title, post_id):
 
 @assignments_blueprint.route('/<course_title>/<user_id>/<post_id>/submissions', methods=['POST'])
 def check(course_title, user_id, post_id):
-    print("+++++++++++")
-    print(course_title)
     current_course = Course.get_or_none(Course.title == course_title)
-    print("================")
-    print(current_course)
     current_info = StudentCourse.get_or_none(StudentCourse.course_name_id == current_course.id)
-    print("---------------")
-    print(current_info)
     current_assignment = Assignment.get_or_none(Assignment.post_id == post_id, Assignment.info_id == current_info.id)
 
     params = request.form
@@ -93,9 +87,9 @@ def check(course_title, user_id, post_id):
     current_assignment.grade_id = params.get('grade')
 
     if current_assignment.save():
-        flash("Successfully graded this bitchass")
+        flash("Successfully graded the student!")
         return redirect(url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = post_id))
     else:
-        flash("Failed to grade this dumb bitch")
+        flash("Failed to grade the student!")
         return redirect(url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = post_id))
     

@@ -186,7 +186,7 @@
             {% if current_user.role.role == "Student" %}
 
             <li>
-                <a class="button" style="vertical-align:middle" href="#"><span>
+                <a class="button" style="vertical-align:middle" href="{{ url_for('users.report', id=current_user.id) }}"><span>
                 <i class="fa fa-trophy" aria-hidden="true"></i> My Grades</span>
                 </a>
             </li>
@@ -228,11 +228,6 @@
                 </div>
             </div>
                                         
-            <li>
-                <a class="button" style="vertical-align:middle" href="#"><span>
-                <i class="fa fa-tachometer" aria-hidden="true"></i>View Progress Report</span>
-                </a>
-            </li>
 
             {% endif %}
                         
@@ -281,7 +276,7 @@
                 {% for key, value in child.items() %}
                     <ul>
                         <li>
-                            {{key.first_name}} {{key.last_name}}
+                            <a href="{{ url_for('users.report', id=current_user.id) }}">{{key.first_name}} {{key.last_name}}</a>
                         </li>
 
                         <ul>                             
