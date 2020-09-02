@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 const usernameInput = document.getElementById('username');
 const button = document.getElementById('join_leave');
 const shareScreen = document.getElementById('share_screen');
@@ -17,9 +19,11 @@ function addLocalVideo() {
 };
 
 function connectButtonHandler(event) {
+    console.log("hello...connectButtonHandler")
     event.preventDefault();
     if (!connected) {
         let username = usernameInput.value;
+        console.log("hello...",username)
         if (!username) {
             alert('Enter your name before connecting');
             return;
@@ -48,12 +52,20 @@ function connectButtonHandler(event) {
 function connect(username) {
     let promise = new Promise((resolve, reject) => {
         // get a token from the back end
-        fetch('/courses/twilio', {
+       console.log("inside connect func")
+        fetch('/conferences/login', {
             method: 'POST',
             body: JSON.stringify({'username': username})
-        }).then(res => res.json()).then(data => {
+            
+        })
+        .then(res => {
+            console.log("...",res)
+            return res.json()
+        })
+        .then(res => {
+            console.log("line66",res)
             // join video call
-            return Twilio.Video.connect(data.token);
+            return Twilio.Video.connect(res.token);
         }).then(_room => {
             room = _room;
             room.participants.forEach(participantConnected);
@@ -188,4 +200,6 @@ function zoomTrack(trackElement) {
 
 addLocalVideo();
 button.addEventListener('click', connectButtonHandler);
+console.log("hello from file end")
 shareScreen.addEventListener('click', shareScreenHandler);
+})

@@ -8,7 +8,8 @@ bundles = {
         'js/vendor/bootstrap-4.1.3.js',
         'js/bootstrap.min.js',
         # 'js/jquery.min.js',
-        'js/custom.js',        
+        'js/custom.js',
+        'js/twilio.js',        
  
         filters='jsmin',
         output='gen/home.%(version)s.js'),

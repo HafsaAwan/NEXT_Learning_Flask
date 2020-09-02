@@ -17,7 +17,8 @@
     .sidebar-logo {
         padding: 10px 15px 10px 30px;
         font-size: 20px;
-        background-color: #2574A9;
+        background-color: #8a483b;
+        color: white;
     }
 
     .sidebar-navigation {
@@ -122,18 +123,131 @@
   opacity: 1;
   right: 0;
 }  
+/* NEW CONTENT LAYOUT */
 
+body{
+    margin-top:20px;
+    background:#f5f5f5;
+}
+/**
+ * cards
+ */
+/*** General styles ***/
+
+
+/**
+ * Profile
+ */
+/*** Profile: Header  ***/
+.profile__avatar {
+  float: left;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 20px;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .profile__avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+.profile__avatar > img {
+  width: 100%;
+  height: auto;
+}
+.profile__header {
+  overflow: hidden;
+}
+.profile__header p {
+  margin: 20px 0;
+}
+/*** Profile: Table ***/
+@media (min-width: 992px) {
+  .profile__table tbody th {
+    width: 200px;
+  }
+}
+
+/*** Profile: Contact ***/
+.profile__contact-btn {
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  background-color: #e64337;
+}
+.profile__contact-hr {
+  position: relative;
+  border-color: rgba(0, 0, 0, 0.1);
+  margin: 40px 0;
+}
+.profile__contact-hr:before {
+  content: "OR";
+  display: block;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #f5f5f5;
+  color: #c6c6cc;
+}
+.profile__contact-info-item {
+  margin-bottom: 30px;
+}
+.profile__contact-info-item:before,
+.profile__contact-info-item:after {
+  content: " ";
+  display: table;
+}
+.profile__contact-info-item:after {
+  clear: both;
+}
+.profile__contact-info-item:before,
+.profile__contact-info-item:after {
+  content: " ";
+  display: table;
+}
+.profile__contact-info-item:after {
+  clear: both;
+}
+.profile__contact-info-icon {
+  float: left;
+  font-size: 18px;
+  color: #999999;
+}
+.profile__contact-info-body {
+  overflow: hidden;
+  padding-left: 20px;
+  color: #999999;
+}
+.profile__contact-info-body a {
+  color: #999999;
+}
+.profile__contact-info-body a:hover,
+.profile__contact-info-body a:focus {
+  color: #999999;
+  text-decoration: none;
+}
+.profile__contact-info-heading {
+  margin-top: 2px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #999999;
+}
 
     </style>
 {% endblock %}
 {% block content %}
 			
 <div class="row content">
-    <div class="col-sm-2 sidebar">
+    <!-- SIDEBAR -->
+    <div class="col-sm-2 ml-2 sidebar">
         <div class="sidebar-logo d-flex flex-column align-items-center">
-            <img src='{{current_user.full_image_path}}' width='150' height='150' class='border rounded-circle'>
-            <h4>{{current_user.username}}</h4>
-            <h5>{{current_user.role.role}}</h5>
+            <img src='{{current_user.full_image_path}}' width='120' height='120' class='border rounded-circle'>
+            <h4 style="color: white;"><a href="{{url_for('users.show',username=current_user.username)}}">@{{current_user.username}}</a></h4>
+            
         </div>
         <ul class="sidebar-navigation">
             <li>
@@ -148,6 +262,11 @@
                 <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
                 <i class="fa fa-graduation-cap" aria-hidden="true"></i> Create a course</span>
                 </button>
+            </li>
+            <li>
+                <a href="{{url_for('messages.show',to_user = current_user.id)}}" class="button" style="vertical-align:middle"><span> 
+                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                </a>
             </li>
 
             <!-- Modal -->
@@ -194,11 +313,18 @@
             {% endif %}
 
             {% if current_user.role.role == "Guardian" %}
+            <!-- Button to trigger Add child modal -->
             <li>
-                <a class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal"><span>
-                <i class="fa fa-user-plus" aria-hidden="true"></i> Add Your Child</span>
+                <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal">
+                <i class="fa fa-tachometer" aria-hidden="true"></i> Add Your Child
+                </button>
             </li>
-
+            <li>
+                <a href="{{url_for('messages.show',to_user = current_user.id)}}" class="button" style="vertical-align:middle"><span> 
+                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                </a>
+            </li>
+            <!-- Modal to add child -->
             <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -231,74 +357,163 @@
 
             {% endif %}
                         
-            <li>
-                <button class="button" style="vertical-align:middle"><span> 
-                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
-                </button>
-            </li>
+            
         </ul>
     </div>
+    <!-- SIDEBAR END -->
+    <!-- MAIN CONTENT -->
 
-    <div class="col-sm-8 text-left"> 
-        <div>
-            <h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
-        </div>
         
-        {% if current_user.role_id == 2 %}
+       
+        <div class="container">
+            <div class="row">
+                  <div class="col-xs-12 col-sm-9">
+                    
+                        <!-- User profile -->
+                        <div class="card shadow p-3 mb-3 bg-white rounded mt-2">
+                            <div class="card-header">
+                                User profile
+                            </div>
+                            <div class="card-body">
+                                <div class="profile__avatar">
+                                <img src='{{current_user.full_image_path}}' alt="...">
+                                </div>
+                                <div class="profile__header">
+                                <h4>{{current_user.first_name}} {{current_user.last_name}} <small>{{current_user.role.role}}</small></h4>
+                                <p class="text-muted">
+                                   <strong>About me: </strong> {{current_user.about_me}}.
+                                </p>
+                                <p><strong>My Favorite quote: </strong>{{current_user.fav_quote}}.</p>
+                                </div>
+                            </div>
+                        </div>
 
-            <h3>Courses I am tutoring: </h3>
+                        <!-- TEACHER ROLE -->
+                        {% if current_user.role_id == 2 %}
+                        <div class="card shadow p-2 mb-3 bg-white rounded">
+                            <div class="card-header">
+                              Courses teaching:
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    {% for course in teacher_courses %}
+                                        <li class="list-group-item">
+                                            <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
+                                            
+                                        </li>
+                                    {% endfor %}
 
-            <ul>
-                {% for course in teacher_courses %}
-                    <li>
-                        <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
+                                  </ul>
+                            </div>
+                            
+                        </div>
+                        <!-- STUDENT ROLE -->
+                        {% elif current_user.role_id == 1 %}
+                        <div class="card shadow p-2 mb-3 bg-white rounded">
+                            <div class="card-header">
+                              My Courses
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-group list-group-flush">
+                                    {% for course in student_courses %}
+                                        <li class="list-group-item">
+                                            <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
+                                            
+                                        </li>
+                                    {% endfor %}
+
+                                  </ul>
+                            </div>
+                            
+                        </div>
+
+                        <!-- GUARDIAN ROLE -->
+                        {% else %}
+                        <div class="card shadow p-2 mb-3 bg-white rounded">
+                            <div class="card-header">
+                                List of enrolled Children
+                            </div>
+                            <div class="card-body">
+                                {% for child in new_list %}
+                                    {% for key, value in child.items() %}
+                                        <ul>
+                                            <li>
+                                                Child: <a href="{{ url_for('users.report', id=current_user.id) }}">{{key.first_name}} {{key.last_name}}</a>
+                                            </li>
+
+                                            <ul>
+                                                Courses enrolled in:
+
+                                                {% for key2, val in value.items() %}
+                                                    <li>
+                                                        {{val.title}} taught by: <a href="{{url_for('messages.show', to_user = key2.id)}}">{{key2.first_name}} {{key2.last_name}}</a> 
+                                                    </li>
+
+                                                {% endfor %}
+                                            </ul>
+                                        </ul>
+                                    {% endfor %}
+                                {% endfor %}
+                            </div>                          
+                        </div>
+                        {% endif %}
+
+
+
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-3">
+                    
+                        <!-- Contact user -->
+                        <p style="margin-top: 10px;">
+                            <a href="#" class="profile__contact-btn btn btn-lg btn-block btn-info" data-toggle="modal" data-target="#profile__contact-form">
+                            Email Me
+                            </a>
+                        </p>
+                
+                        <hr class="profile__contact-hr">
                         
-                    </li>
-                {% endfor %}
-            </ul>
+                        <!-- Contact info -->
+                        <div class="profile__contact-info">
+                            <div class="profile__contact-info-item">
+                            <div class="profile__contact-info-icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="profile__contact-info-body">
+                                <h5 class="profile__contact-info-heading">Home number</h5>
+                                (03)987-65-43
+                            </div>
+                            </div>
+                            <div class="profile__contact-info-item">
+                            <div class="profile__contact-info-icon">
+                                <i class="fa fa-phone"></i>
+                            </div>
+                            <div class="profile__contact-info-body">
+                                <h5 class="profile__contact-info-heading">Mobile number</h5>
+                                (000)987-65-432
+                            </div>
+                            </div>
 
-        {% elif current_user.role_id == 1 %}
-            <h3>Courses I am enrolled in: </h3>
-
-            <ul>
-                {% for course in student_courses %}
-                    <li>
-                        <a href="{{url_for('courses.show',course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-
-        {% else %}
-            <h3>List of Child</h3>
+                            <div class="profile__contact-info-item">
+                            <div class="profile__contact-info-icon">
+                                <i class="fa fa-map-marker"></i>
+                            </div>
+                            <div class="profile__contact-info-body">
+                                <h5 class="profile__contact-info-heading">Home address</h5>
+                                123 Dreamland Avenue
+                            </div>
+                            </div>
+                        </div>
             
-            
-            {% for child in new_list %}
-                {% for key, value in child.items() %}
-                    <ul>
-                        <li>
-                            <a href="{{ url_for('users.report', id=current_user.id) }}">{{key.first_name}} {{key.last_name}}</a>
-                        </li>
-
-                        <ul>                             
-                            {% for key2, val in value.items() %}
-                                <li>
-                                    {{key2.first_name}} {{key2.last_name}} : {{val.title}}
-                                </li>
-
-                            {% endfor %}
-                        </ul>
-                    </ul>
-                {% endfor %}
-            {% endfor %}
-
-        {% endif %}
-        <hr>
-        <p>some werid text</p>    
+                    </div>
+                </div>
+            </div>
         
-        <hr/>
-        <h3>Test</h3>
-        <p>Lorem ipsum...</p>
-    </div>
+
+        
+
+   
+    <!-- MAIN CONTENT END -->
 </div>
 
     

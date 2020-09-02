@@ -1,0 +1,124 @@
+{% extends "_layout.html" %}
+{% block header%}
+    <style>
+        /* Remove the navbar's default margin-bottom and rounded borders */ 
+        .navbar {
+        margin-bottom: 0;
+        border-radius: 0;
+        }
+        
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .row.content {height: 100vh}
+        
+        /* Set gray background color and 100% height */
+        .sidenav {
+        padding-top: 20px;
+        background-color: #f1f1f1;
+        height: 100%;
+        }
+        
+        /* Set black background color, white text and some padding */
+        footer {
+        background-color: #555;
+        color: white;
+        padding: 15px;
+        }
+        
+        /* On small screens, set height to 'auto' for sidenav and grid */
+        @media screen and (max-width: 767px) {
+        .sidenav {
+            height: auto;
+            padding: 15px;
+        }
+        .row.content {height:auto;} 
+        }
+
+        
+
+    </style>
+{% endblock %}
+{% block content %}
+			
+    <div class="container-fluid text-center">    
+        <div class="row content">
+            <!-- LEFT SIDEBAR -->
+            <div class="col-sm-2 sidenav">
+                
+                
+            </div>
+            <!-- LEFT SIDEBAR ENDS -->
+            <!-- Main content -->
+            <div class="container col-sm-8 p-2" style="box-sizing: border-box;">
+                
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- SHOW MESSAGES -->
+                            <div class="card" style="width: 100%;">
+                                
+                                <div class="card-body">
+                                    <h5 class="card-title">Messages</h5>
+                                    <ul class="list-group">
+                                    
+                                        {% for msg in messages %}
+                                        <li class="list-group-item">{{msg.message}}</li>
+                                        {% endfor %}
+                                    </ul>
+                                  
+                                </div>
+                            </div>
+
+                            <!-- FORM to SEND MESSAGE -->
+                            <div class="card" style="width: 100%; border-bottom: none;">
+                                
+                                <div class="card-body">
+                                  <h5 class="card-title text-center mb-5">Send Message </h5>
+                                    <p class="card-text">
+                                        <form action="{{url_for('messages.create', teacher_id = teacher_id)}}" method="POST">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                        
+                                            <input name="message" class="form-control mr-2 ml-3" placeholder="What's on your mind?" rows="4" style="border: 1px solid gray;"></input>
+                                                <br>
+                                            <button type="submit" class="btn btn-primary float-right" >Send</button>
+                                        </form>
+                                    </p>
+                                  
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <!-- Main content ends -->
+
+            <!-- Side bar -->
+            <div class="col-sm-2 sidenav">
+
+                
+
+                <div class="well card">
+                    <div class="card-body">
+                        <h5>Upcoming Events</h5>
+                         
+                        <p>No new events</p>
+                        <p></p>
+                    </div>
+                    
+                </div>
+
+
+            </div>
+            <!-- Sidebar ends -->
+        </div>
+    </div>
+    
+
+    <script>
+        $(".prettydate").prettydate();
+      </script>
+{% endblock %}
+

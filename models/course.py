@@ -7,4 +7,4 @@ from flask_login import UserMixin
 
 class Course(BaseModel):
     title = pw.TextField(unique=True, null=False)
-    teacher = pw.ForeignKeyField(User, on_delete='CASCADE')
+    teacher = pw.ForeignKeyField(User, backref="my_courses", on_delete='CASCADE')

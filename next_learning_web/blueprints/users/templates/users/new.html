@@ -3,7 +3,8 @@
 {% block header%}
 <style>
 	.my-login-page .card-wrapper {
-		width: 400px;
+		width: 600px;
+		margin-left: auto;
 	}
 
 	.my-login-page .card {
@@ -53,24 +54,75 @@
 			padding: 15px;
 		}
 	}
+	#myVideo {
+		position: fixed;
+		z-index: -1;
+		right: 0;
+		bottom: 0;
+		min-width: 100%; 
+		min-height: 100%;
+		filter: brightness(45%);
+		}
 
-}
+	footer{
+		visibility: hidden;
+	}
+
 </style>
 {% endblock %}
 {% block content %}
 <div class="my-login-page" style="margin-top: 50px;">
-
+	<video autoplay muted loop id="myVideo">
+		<source src="../../../../static/Productive-Morning.mp4" type="video/mp4">
+		Your browser does not support HTML5 video.
+	  </video>
 
 	<section class="h-100">
 		<div class="container h-100">
-			<div class="row justify-content-md-center h-100">
+			<div class="row ">
 				<div class="card-wrapper">
 					<div class="card fat">
 						<div class="card-body">
-							<h4 class="card-title">Sign Up</h4>
+							<h4 class="card-title">Sign Up</h4>							
+							
 							<form action = "{{ url_for('users.create') }}" method="POST">
 								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-								<div class="form-group">
+								<div class="row">
+								<div class="col" style="margin-right: 2px;">
+									<div class="form-group">
+										<label for="first_name">First Name:</label>
+										<input type="text" name ="first_name" class="form-control" required/>
+									</div>
+	
+									<div class="form-group">
+										<label for="last_name">Last Name:</label>
+										<input type="text" name ="last_name" class="form-control" required/>
+									</div>
+									<div class="form-group">
+										<label for="email">Email:</label>
+										<input type='text' name='email' class="form-control" />
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label for="username">Username:</label>
+										<input type="text" name ="username" class="form-control" required/>
+									</div>
+									<div class="form-group">
+										<label for="password">Password:</label>
+										<input type="password" class="form-control" name="password" required data-eye>
+									</div>
+									<div class="form-group">
+										<label for="sel1">Choose Role:</label>
+										<select class="form-control" name="role" style="border: solid gray;">
+										  <option value="1">Student</option>
+										  <option value="2">Teacher</option>
+										  <option value="3">Guardian</option>
+										</select>
+									</div>
+								</div>
+								</div>
+								<!-- <div class="form-group">
 									<label for="first_name">First Name:</label>
 									<input type="text" name ="first_name" class="form-control" required/>
 								</div>
@@ -99,15 +151,15 @@
 									  <option value="2">Teacher</option>
 									  <option value="3">Guardian</option>
 									</select>
-								</div>
-								<div class="form-group m-0">
+								</div> -->
+								<div class="form-group m-0 row">
 									<button type="submit" class="btn btn-primary btn-block">
 										Submit
 									</button>
 								</div>
 
-								<div class="mt-4 text-center">
-									Already have an account? <a href="{{ url_for('sessions.new') }}">Login!</a>
+								<div class="mt-4" style="text-align: center;">
+									Already have an account? <a href="{{ url_for('sessions.new') }}"> Login!</a>
 								</div>						
 							</form>
 		

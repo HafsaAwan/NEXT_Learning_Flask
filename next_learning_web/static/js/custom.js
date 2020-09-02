@@ -296,3 +296,4 @@ function alertToast(my_message,my_category){
         $("[prettydate]").prettydate();
     });
 });
+
