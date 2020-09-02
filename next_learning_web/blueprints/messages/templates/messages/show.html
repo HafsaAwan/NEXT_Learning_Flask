@@ -1,39 +1,241 @@
 {% extends "_layout.html" %}
 {% block header%}
-    <style>
-        /* Remove the navbar's default margin-bottom and rounded borders */ 
-        .navbar {
-        margin-bottom: 0;
-        border-radius: 0;
-        }
-        
-        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-        .row.content {height: 100vh}
-        
-        /* Set gray background color and 100% height */
-        .sidenav {
-        padding-top: 20px;
-        background-color: #f1f1f1;
-        height: 100%;
-        }
-        
-        /* Set black background color, white text and some padding */
-        footer {
-        background-color: #555;
-        color: white;
-        padding: 15px;
-        }
-        
-        /* On small screens, set height to 'auto' for sidenav and grid */
-        @media screen and (max-width: 767px) {
-        .sidenav {
-            height: auto;
-            padding: 15px;
-        }
-        .row.content {height:auto;} 
-        }
+<style>
 
-        
+    .sidebar {
+        height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background: #1a1a1a;
+        color: #fff;
+    }
+
+    .content-container {
+        padding-top: 20px;
+    }
+
+    .sidebar-logo {
+        padding: 10px 15px 10px 30px;
+        font-size: 20px;
+        background-color: #8a483b;
+        color: white;
+    }
+
+    .sidebar-navigation {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        position: relative;
+    }
+
+    .sidebar-navigation li {
+        background-color: transparent;
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        line-height: 20px;
+    }
+
+    /* .sidebar-navigation li a {
+        padding: 10px 15px 10px 30px;
+        display: block;
+        color: #fff;
+    } */
+
+    .sidebar-navigation li .fa {
+        margin-right: 10px;
+    }
+
+    /* .sidebar-navigation li a:active,
+    .sidebar-navigation li a:hover,
+    .sidebar-navigation li a:focus {
+        text-decoration: none;
+        outline: none;
+    } */
+
+    .sidebar-navigation li::before {
+        background-color: #2574A9;
+        position: absolute;
+        content: '';
+        height: 100%;
+        left: 0;
+        top: 0;
+        -webkit-transition: width 0.2s ease-in;
+        transition: width 0.2s ease-in;
+        width: 3px;
+        z-index: -1;
+    }
+
+    .sidebar-navigation li:hover::before {
+        width: 100%;
+    }
+
+    .sidebar-navigation .header {
+        font-size: 12px;
+        text-transform: uppercase;
+        background-color: #151515;
+        padding: 10px 15px 10px 30px;
+    }
+
+    .sidebar-navigation .header::before {
+        background-color: transparent;
+    }
+
+    .content-container {
+        padding-left: 220px;
+    }
+    .button {
+        display: inline-block;
+        border-radius: 4px;
+        background-color: #f4511e;
+        border: none;
+        color: #FFFFFF;
+        text-align: center;
+        font-size: 14px;
+        padding: 10px;
+        width: 220px;
+        transition: all 0.5s;
+        cursor: pointer;
+        margin: 5px;
+    }
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}  
+/* NEW CONTENT LAYOUT */
+
+body{
+    margin-top:20px;
+    background:#f5f5f5;
+}
+/**
+ * cards
+ */
+/*** General styles ***/
+
+
+/**
+ * Profile
+ */
+/*** Profile: Header  ***/
+.profile__avatar {
+  float: left;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 20px;
+  overflow: hidden;
+}
+@media (min-width: 768px) {
+  .profile__avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+.profile__avatar > img {
+  width: 100%;
+  height: auto;
+}
+.profile__header {
+  overflow: hidden;
+}
+.profile__header p {
+  margin: 20px 0;
+}
+/*** Profile: Table ***/
+@media (min-width: 992px) {
+  .profile__table tbody th {
+    width: 200px;
+  }
+}
+
+/*** Profile: Contact ***/
+.profile__contact-btn {
+  padding: 12px 20px;
+  margin-bottom: 20px;
+  background-color: #e64337;
+}
+.profile__contact-hr {
+  position: relative;
+  border-color: rgba(0, 0, 0, 0.1);
+  margin: 40px 0;
+}
+.profile__contact-hr:before {
+  content: "OR";
+  display: block;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background-color: #f5f5f5;
+  color: #c6c6cc;
+}
+.profile__contact-info-item {
+  margin-bottom: 30px;
+}
+.profile__contact-info-item:before,
+.profile__contact-info-item:after {
+  content: " ";
+  display: table;
+}
+.profile__contact-info-item:after {
+  clear: both;
+}
+.profile__contact-info-item:before,
+.profile__contact-info-item:after {
+  content: " ";
+  display: table;
+}
+.profile__contact-info-item:after {
+  clear: both;
+}
+.profile__contact-info-icon {
+  float: left;
+  font-size: 18px;
+  color: #999999;
+}
+.profile__contact-info-body {
+  overflow: hidden;
+  padding-left: 20px;
+  color: #999999;
+}
+.profile__contact-info-body a {
+  color: #999999;
+}
+.profile__contact-info-body a:hover,
+.profile__contact-info-body a:focus {
+  color: #999999;
+  text-decoration: none;
+}
+.profile__contact-info-heading {
+  margin-top: 2px;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #999999;
+}
 
     </style>
 {% endblock %}
@@ -42,9 +244,123 @@
     <div class="container-fluid text-center">    
         <div class="row content">
             <!-- LEFT SIDEBAR -->
-            <div class="col-sm-2 sidenav">
-                
-                
+            <div class="col-sm-2 ml-2 sidebar">
+                <div class="sidebar-logo d-flex flex-column align-items-center">
+                    <img src='{{current_user.full_image_path}}' width='120' height='120' class='border rounded-circle'>
+                    <h4 style="color: white;">@{{current_user.username}}</h4>
+                    
+                </div>
+                <ul class="sidebar-navigation">
+                    <li>
+                        <a class="button" style="vertical-align:middle" href="{{ url_for('users.edit', id=current_user.id) }}"><span>
+                        <i class="fa fa-university" aria-hidden="true"></i> Edit Profile</span>
+                        </a>
+                    </li>
+                    <hr>
+                    {% if current_user.role.role == "Teacher" %}
+        
+                    <li>
+                        <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
+                        <i class="fa fa-university" aria-hidden="true"></i> Create a course</span>
+                        </button>
+                    </li>
+                    <li>
+                        <a href="{{url_for('messages.show',to_user = current_user.id)}}" class="button" style="vertical-align:middle"><span> 
+                        <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                        </a>
+                    </li>
+        
+                    <!-- Modal -->
+                    <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Course Creation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action = "{{ url_for('courses.create') }}" method="POST">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        
+                                        <div class="form-group">
+                                            <label for="course_title">Course Title:</label>
+                                            <input type="text" name ="course_title" class="form-control" required/>
+                                        </div>
+        
+                                        <div class="form-group m-0">
+                                            <button type="submit" class="btn btn-primary btn-block">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    {% endif %}
+                            
+                                
+                    {% if current_user.role.role == "Student" %}
+        
+                    <li>
+                        <a href="#">
+                        <i class="fa fa-trophy" aria-hidden="true"></i> My Grades
+                        </a>
+                    </li>
+        
+                    {% endif %}
+        
+                    {% if current_user.role.role == "Guardian" %}
+                    <!-- Button to trigger Add child modal -->
+                    <li>
+                        <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal">
+                        <i class="fa fa-tachometer" aria-hidden="true"></i> Add Your Child
+                        </button>
+                    </li>
+                    <li>
+                        <a href="{{url_for('messages.show',to_user = current_user.id)}}" class="button" style="vertical-align:middle"><span> 
+                        <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                        </a>
+                    </li>
+                    <!-- Modal to add child -->
+                    <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action = "{{ url_for('users.register', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                        <div class="form-group">
+                                            <label for="username">Username:</label>
+                                            <input type="text" name ="username" class="form-control" required/>
+                                        </div>
+        
+                                        <hr/>
+        
+                                        <div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                                
+                    <a class="nav-item nav-link " href="#">View Progress Report</a>
+        
+                    {% endif %}
+                                
+                    
+                </ul>
             </div>
             <!-- LEFT SIDEBAR ENDS -->
             <!-- Main content -->
@@ -53,12 +369,12 @@
                 <div class="card" style="width: 100%; border-bottom: none;">
                                 
                     <div class="card-body">
-                      <h5 class="card-title text-center mb-5">Send Message </h5>
+                      <h5 class="card-header text-center mb-5">Send Message </h5>
                         <p class="card-text">
                             <form action="{{url_for('messages.create', to_user=to_user)}}" method="POST">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                             
-                                <input name="message" class="form-control mr-2 ml-3" placeholder="What's on your mind?" rows="4" style="border: 1px solid gray;"></input>
+                                <input name="message" class="form-control" placeholder="What's on your mind?" rows="4" style="border: 1px solid gray;"></input>
                                     <br>
                                 <button type="submit" class="btn btn-primary float-right" >Send</button>
                             </form>
@@ -97,24 +413,7 @@
             
             <!-- Main content ends -->
 
-            <!-- Side bar -->
-            <div class="col-sm-2 sidenav">
-
-                
-
-                <div class="well card">
-                    <div class="card-body">
-                        <h5>Upcoming Events</h5>
-                         
-                        <p>No new events</p>
-                        <p></p>
-                    </div>
-                    
-                </div>
-
-
-            </div>
-            <!-- Sidebar ends -->
+            
         </div>
     </div>
     

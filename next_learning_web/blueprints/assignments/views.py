@@ -9,7 +9,7 @@ import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
 from next_learning_web.util.helpers import upload_file_to_s3
-from werkzeug import secure_filename
+# from werkzeug import secure_filename
 
 
 assignments_blueprint = Blueprint('assignments',
@@ -49,7 +49,7 @@ def upload(user_id, course_title, post_id):
             file = request.files["assignment"]
 
             # we sanitize the filename using the secure_filename helper function provided by the werkzeurg.security module.
-            file.filename = secure_filename(file.filename)
+            # file.filename = secure_filename(file.filename)
 
             # get path to image on S3 bucket using function in helper.py
             file_path = upload_file_to_s3(file, user.username)

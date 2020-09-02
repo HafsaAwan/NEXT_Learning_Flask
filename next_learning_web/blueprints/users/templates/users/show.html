@@ -263,6 +263,11 @@ body{
                 <i class="fa fa-university" aria-hidden="true"></i> Create a course</span>
                 </button>
             </li>
+            <li>
+                <a href="{{url_for('messages.show',to_user = current_user.id)}}" class="button" style="vertical-align:middle"><span> 
+                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                </a>
+            </li>
 
             <!-- Modal -->
             <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -314,6 +319,11 @@ body{
                 <i class="fa fa-tachometer" aria-hidden="true"></i> Add Your Child
                 </button>
             </li>
+            <li>
+                <a href="{{url_for('messages.show',to_user = current_user.id)}}" class="button" style="vertical-align:middle"><span> 
+                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                </a>
+            </li>
             <!-- Modal to add child -->
             <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -348,11 +358,7 @@ body{
 
             {% endif %}
                         
-            <li>
-                <button class="button" style="vertical-align:middle"><span> 
-                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
-                </button>
-            </li>
+            
         </ul>
     </div>
     <!-- SIDEBAR END -->
@@ -433,13 +439,15 @@ body{
                                     {% for key, value in child.items() %}
                                         <ul>
                                             <li>
-                                                {{key.first_name}} {{key.last_name}}
+                                                Child: {{key.first_name}} {{key.last_name}}
                                             </li>
 
-                                            <ul>                             
+                                            <ul>
+                                                Courses enrolled in:
+
                                                 {% for key2, val in value.items() %}
                                                     <li>
-                                                        {{key2.first_name}} {{key2.last_name}} : {{val.title}}
+                                                        {{val.title}} taught by: <a href="{{url_for('messages.show', to_user = key2.id)}}">{{key2.first_name}} {{key2.last_name}}</a> 
                                                     </li>
 
                                                 {% endfor %}
@@ -473,8 +481,8 @@ body{
                                 <i class="fa fa-phone"></i>
                             </div>
                             <div class="profile__contact-info-body">
-                                <h5 class="profile__contact-info-heading">Work number</h5>
-                                (000)987-65-43
+                                <h5 class="profile__contact-info-heading">Home number</h5>
+                                (03)987-65-43
                             </div>
                             </div>
                             <div class="profile__contact-info-item">
@@ -483,7 +491,7 @@ body{
                             </div>
                             <div class="profile__contact-info-body">
                                 <h5 class="profile__contact-info-heading">Mobile number</h5>
-                                (000)987-65-43
+                                (000)987-65-432
                             </div>
                             </div>
 
@@ -492,8 +500,8 @@ body{
                                 <i class="fa fa-map-marker"></i>
                             </div>
                             <div class="profile__contact-info-body">
-                                <h5 class="profile__contact-info-heading">Work address</h5>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                <h5 class="profile__contact-info-heading">Home address</h5>
+                                123 Dreamland Avenue
                             </div>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session,abort
 from models.user import User
 from models.course import Course
 from models.student_course import StudentCourse
@@ -9,18 +9,13 @@ import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
 from next_learning_web.util.helpers import upload_file_to_s3
-from werkzeug import secure_filename
+# from werkzeug import secure_filename
+from app import app
 
-## twilio video call related codes
-import os
-from dotenv import load_dotenv
+# Twilio
 from twilio.jwt.access_token import AccessToken
 from twilio.jwt.access_token.grants import VideoGrant
 
-load_dotenv()
-twilio_account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-twilio_api_key_sid = os.environ.get('TWILIO_API_KEY_SID')
-twilio_api_key_secret = os.environ.get('TWILIO_API_KEY_SECRET')
 
 
 courses_blueprint = Blueprint('courses',
@@ -99,25 +94,23 @@ def enroll(course_title, user_id):
         return redirect(url_for("courses.show", course_title=course_title, user_id=user_id))
     
 
-@courses_blueprint.route('/<course_title>/conference')
-def conference(course_title):
-    params = request.form
-    current_course = Course.get_or_none(Course.title == course_title)
-    students = []
-    username = current_user.username
+# @courses_blueprint.route('/show_twilio', methods=['GET'])
+# def show_twilio():
+#     return render_template('courses/video_call.html')
 
-    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
-                        twilio_api_key_secret, identity=username)
-    token.add_grant(VideoGrant(room=course_title))
-    token = {'token': token.to_jwt().decode()}
+# @courses_blueprint.route('/twilio', methods=['POST'])
+# def twilio():
+#     print("******************************************************************kjhaugyf")
+#     username = request.form.get('username')
+#     if not username:
+#         abort(401)
 
-    return render_template('courses/conference.html', course_title=course_title, username=username)
+#     twilio_account_sid = app.config.get('TWILIO_ACCOUNT_SID')
+#     twilio_api_key_sid = app.config.get('TWILIO_API_KEY_SID')
+#     twilio_api_key_secret = app.config.get('TWILIO_API_KEY_SECRET')
 
-@courses_blueprint.route('/courses/twilio', methods=['GET','POST'])
-def twilio():
-    username = current_user.username
-    token = AccessToken(twilio_account_sid, twilio_api_key_sid,
-                        twilio_api_key_secret, identity=username)
-    token.add_grant(VideoGrant(room="Testing Room"))
-
-    return {'token': token.to_jwt().decode()}
+#     token = AccessToken(twilio_account_sid, twilio_api_key_sid,
+#                         twilio_api_key_secret, identity=username)
+#     token.add_grant(VideoGrant(room='My Room'))
+    
+#     return {'token': token.to_jwt().decode()}

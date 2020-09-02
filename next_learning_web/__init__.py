@@ -1,4 +1,4 @@
-from app import app
+from app import app, csrf
 from flask import render_template
 from next_learning_web.blueprints.users.views import users_blueprint
 from next_learning_web.blueprints.sessions.views import sessions_blueprint
@@ -6,7 +6,7 @@ from next_learning_web.blueprints.assignments.views import assignments_blueprint
 from next_learning_web.blueprints.courses.views import courses_blueprint
 from next_learning_web.blueprints.posts.views import posts_blueprint
 from next_learning_web.blueprints.messages.views import messages_blueprint
-
+from next_learning_web.blueprints.conferences.views import conferences_blueprint
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
 from next_learning_web.util.google_oauth import oauth
@@ -22,7 +22,9 @@ app.register_blueprint(assignments_blueprint, url_prefix="/assignments")
 app.register_blueprint(courses_blueprint, url_prefix="/courses")
 app.register_blueprint(posts_blueprint, url_prefix="/posts")
 app.register_blueprint(messages_blueprint, url_prefix="/messages")
+app.register_blueprint(conferences_blueprint, url_prefix="/conferences")
 
+csrf.exempt(conferences_blueprint)
 
 @app.errorhandler(500)
 def internal_server_error(e):

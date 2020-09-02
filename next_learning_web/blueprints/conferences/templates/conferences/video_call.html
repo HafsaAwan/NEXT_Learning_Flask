@@ -145,6 +145,43 @@
 .reply a {
     text-decoration: none
 }
+
+/* twilio */
+.container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.participant {
+    margin-bottom: 5px;
+    margin-right: 5px;
+}
+.participant div {
+    text-align: center;
+}
+.participant div video {
+    background-color: #ccc;
+    border: 1px solid black;
+}
+.participant div video:not(.participantZoomed) {
+    width: 240px;
+    height: 180px;
+}
+.participant .label {
+    background-color: #ddd;
+}
+.participantZoomed {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+.participantHidden {
+    display: none;
+}
+
     </style>
 {% endblock %}
 {% block content %}
@@ -226,9 +263,9 @@
             </li>
             
             <li>
-                <a class="button" style="vertical-align:middle" href="{{url_for('conferences.index')}}"><span>
+                <button class="button" style="vertical-align:middle" href="#"><span>
                 <i class="fa fa-university" aria-hidden="true"></i>Video Call</span>
-                </a>
+                </button>
             </li>
         {% endif %}
         
@@ -255,103 +292,25 @@
             <!-- Main content -->
             <div class="container col-sm-8 p-2" style="box-sizing: border-box;">
                 <div class="card">
-                    <div class="row">
-                        <div class="col-md-12">
-
-                            <div class="card text-white bg-secondary" style="width: 100%; border-bottom: none;">
-                                
-                                <div class="card-body">
-                                  <h5 class="card-title text-center mb-5 text-white"><a href="{{url_for('courses.show',course_title=course_title, user_id=current_user.id)}}" style="color: white; text-decoration: underline;">{{course_title}}</a> Class Forum </h5>
-                                    <p class="card-text">
-                                        <form action="{{url_for('posts.create', course_name = course_title, user_id=current_user.id,post_id = 1 )}}" method="POST" enctype="multipart/form-data">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                        
-                                            <textarea name="post_content" class="form-control mr-2 ml-3" placeholder="Write an update" rows="4" style="border: 1px solid gray;"></textarea>
-                                                <br>
-
-                                            {% if user.role.role == 'Teacher' %}
-                                                <div class="form-group">
-                                                    <label for="assignment">Choose assignment:</label>
-                                                    <input type="file" class="form-control-file" name="assignment">
-                                                </div>
-                                            {% endif %}
-                                            
-                                            <button type="submit" class="btn btn-primary float-right" >Post</button>
-                                        </form>
-                                    </p>
-                                  
-                                </div>
-                            </div>
-                            {% for post in course_posts %}                            
-                                <div class="row m-3">
-                                    <div class="col-md-12">
-                                        <hr/> 
-                                        <div class="media"> <img class="mr-2 ml-3 rounded-circle d-inline-block align-top" alt="Bootstrap Media Preview" src="{{post.user.full_image_path}}" width="45" height="45"/>
-                                            <div class="media-body text-left">
-                                                <div class="row">
-                                                    <div class="col-8 d-flex">
-                                                        <h5>{{post.user.first_name}} {{post.user.last_name}}</h5> <span class="prettydate ml-3">{{post.created_at}}</span>
-                                                    </div>
-
-                                                    {% if post.file_path %}
-                                                        <div>
-                                                            <a href='{{post.full_file_path}}'>Assignment Download</a>
-                                                        </div>
-                                                    {% endif %}
-
-                                                </div> 
-                                                <p style="color: black;">{{post.post_content}}</p>
-                                                <div class="row">
-                                                    <div class="col-4 ml-auto">
-                                                        
-                                                        <div class="pull-right reply"> 
-                                                            <!-- <a href="#"><span><i class="fa fa-reply"></i> reply</span></a>  -->
-                                                            <form class="form-inline" action="{{url_for('posts.create', course_name = course_title,user_id=current_user.id, post_id = post.id )}}" method="POST">
-                                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                                                                <input type="text" name = "comment" class="form-control" placeholder="Add a comment" style="border:1px solid lightgrey;">
-                                                                
-                                                                <button type="submit" class="btn btn-link ml-auto" ><i class="fa fa-reply" aria-hidden="true"></i> Reply</button> 
-                                                            </form>
-                                                            
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                 
-                                                <!-- Comment -->
-                                                {% for comment in post.comments %}
-                                                    <div class="media mt-4"> 
-                                                        <a class="pr-4" href="#"><img class="rounded-circle d-inline-block align-top"width="45" height="45" alt="Bootstrap Media Another Preview" src="{{comment.user.full_image_path}}" /></a>
-                                                        <div class="media-body">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex">
-                                                                    <h5>{{comment.user.first_name}} {{comment.user.last_name}}</h5> <span class="prettydate ml-3">{{comment.created_at}}</span>
-                                                                </div>
-                                                            </div> 
-                                                            <p style="color: maroon;">{{comment.content}}</p>
-                                                        </div>
-                                                    </div>                                                    
-                                                {% endfor %}
-                                                
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                    <h1>Flask & Twilio Video Conference</h1>
+                    <form>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <label for="username">Name: </label>
+                        <input type="text" name="username" id="username">
+                        <button id="join_leave">Join call</button>
+                        <button id="share_screen" disabled>Share screen</button>
+                    </form>
+                    <p id="count">Disconnected.</p>
+                    <div id="container" class="container">
+                        <div id="local" class="participant"><div></div><div class="label">Me</div></div>
+                        <!-- more participants will be added dynamically here -->
                     </div>
                 </div>
+                
             </div>
-            
-            
-            
-            <!-- Main content ends -->
-        </div>
-    </div>
-    
 
-    <script>
-        $(".prettydate").prettydate();
-      </script>
+        
+        
+
 {% endblock %}
 

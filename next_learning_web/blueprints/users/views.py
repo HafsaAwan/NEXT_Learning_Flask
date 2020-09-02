@@ -7,7 +7,7 @@ import peewee as pw
 import re
 from flask_login import login_user, logout_user, login_required, current_user
 from next_learning_web.util.helpers import upload_file_to_s3
-from werkzeug import secure_filename
+# from werkzeug import secure_filename
 
 import peewee as pw
 
@@ -200,7 +200,7 @@ def upload(id):
                 return redirect(url_for("users.edit", id=id))
 
             file = request.files["profile_image"]
-            file.filename = secure_filename(file.filename)
+            # file.filename = secure_filename(file.filename)
             image_path = upload_file_to_s3(file,user.username )
             
             user.image_path = image_path
