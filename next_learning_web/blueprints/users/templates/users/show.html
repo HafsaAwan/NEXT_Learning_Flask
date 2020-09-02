@@ -246,7 +246,7 @@ body{
     <div class="col-sm-2 ml-2 sidebar">
         <div class="sidebar-logo d-flex flex-column align-items-center">
             <img src='{{current_user.full_image_path}}' width='120' height='120' class='border rounded-circle'>
-            <h4 style="color: white;">@{{current_user.username}}</h4>
+            <h4 style="color: white;"><a href="{{url_for('users.show',username=current_user.username)}}">@{{current_user.username}}</a></h4>
             
         </div>
         <ul class="sidebar-navigation">
