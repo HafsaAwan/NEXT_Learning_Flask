@@ -130,178 +130,182 @@
 			
 <div class="row content">
     <div class="col-sm-2 sidebar">
-    <div class="sidebar-logo d-flex flex-column align-items-center">
-        <img src='{{current_user.full_image_path}}' width='150' height='150' class='border rounded-circle'>
-        <h4>{{current_user.username}}</h4>
-        <h5>{{current_user.role.role}}</h5>
+        <div class="sidebar-logo d-flex flex-column align-items-center">
+            <img src='{{current_user.full_image_path}}' width='150' height='150' class='border rounded-circle'>
+            <h4>{{current_user.username}}</h4>
+            <h5>{{current_user.role.role}}</h5>
+        </div>
+        <ul class="sidebar-navigation">
+            <li>
+                <a class="button" style="vertical-align:middle" href="{{ url_for('users.edit', id=current_user.id) }}"><span>
+                <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile</span>
+                </a>
+            </li>
+            <hr>
+            {% if current_user.role.role == "Teacher" %}
+
+            <li>
+                <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i> Create a course</span>
+                </button>
+            </li>
+
+            <!-- Modal -->
+            <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Course Creation</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action = "{{ url_for('courses.create') }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                                <div class="form-group">
+                                    <label for="course_title">Course Title:</label>
+                                    <input type="text" name ="course_title" class="form-control" required/>
+                                </div>
+
+                                <div class="form-group m-0">
+                                    <button type="submit" class="btn btn-primary btn-block">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+                    
+                        
+            {% if current_user.role.role == "Student" %}
+
+            <li>
+                <a class="button" style="vertical-align:middle" href="#"><span>
+                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades</span>
+                </a>
+            </li>
+
+            {% endif %}
+
+            {% if current_user.role.role == "Guardian" %}
+            <li>
+                <a class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal"><span>
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Add Your Child</span>
+            </li>
+
+            <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action = "{{ url_for('users.register', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                                <div class="form-group">
+                                    <label for="username">Username:</label>
+                                    <input type="text" name ="username" class="form-control" required/>
+                                </div>
+
+                                <hr/>
+
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                        
+            <li>
+                <a class="button" style="vertical-align:middle" href="#"><span>
+                <i class="fa fa-tachometer" aria-hidden="true"></i>View Progress Report</span>
+                </a>
+            </li>
+
+            {% endif %}
+                        
+            <li>
+                <button class="button" style="vertical-align:middle"><span> 
+                <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
+                </button>
+            </li>
+        </ul>
     </div>
-    <ul class="sidebar-navigation">
-        <li>
-            <a class="button" style="vertical-align:middle" href="{{ url_for('users.edit', id=current_user.id) }}"><span>
-            <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile</span>
-            </a>
-        </li>
-        <hr>
-        {% if current_user.role.role == "Teacher" %}
 
-        <li>
-            <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
-            <i class="fa fa-graduation-cap" aria-hidden="true"></i> Create a course</span>
-            </button>
-        </li>
-
-        <!-- Modal -->
-        <div class="modal fade" id="courseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Course Creation</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action = "{{ url_for('courses.create') }}" method="POST">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-
-                            <div class="form-group">
-                                <label for="course_title">Course Title:</label>
-                                <input type="text" name ="course_title" class="form-control" required/>
-                            </div>
-
-                            <div class="form-group m-0">
-                                <button type="submit" class="btn btn-primary btn-block">
-                                    Submit
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <div class="col-sm-8 text-left"> 
+        <div>
+            <h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
         </div>
+        
+        {% if current_user.role_id == 2 %}
 
-        {% endif %}
-                   
-                    
-        {% if current_user.role.role == "Student" %}
+            <h3>Courses I am tutoring: </h3>
 
-        <li>
-            <a class="button" style="vertical-align:middle; padding:10px 5px;" href="#"><span>
-            <i class="fa fa-trophy" aria-hidden="true"></i> My Grades</span>
-            </a>
-        </li>
-        {% endif %}
+            <ul>
+                {% for course in teacher_courses %}
+                    <li>
+                        <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
+                        
+                    </li>
+                {% endfor %}
+            </ul>
 
-        {% if current_user.role.role == "Guardian" %}
-        <li>
-            <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childModal"><span>
-            <i class="	fa fa-user-plus" aria-hidden="true"></i> Add Your Child</span>
-            </button>
-        </li>
+        {% elif current_user.role_id == 1 %}
+            <h3>Courses I am enrolled in: </h3>
 
-        <div class="modal fade" id="childModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Child Name</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form action = "{{ url_for('users.register', id=current_user.id) }}" method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                            <div class="form-group">
-                                <label for="username">Username:</label>
-                                <input type="text" name ="username" class="form-control" required/>
-                            </div>
+            <ul>
+                {% for course in student_courses %}
+                    <li>
+                        <a href="{{url_for('courses.show',course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
 
-                            <hr/>
-
-                            <div>
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
+        {% else %}
+            <h3>List of Child</h3>
             
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-                                    
-        <li>
-            <a class="button" style="vertical-align:middle; padding:10px 5px;" href="#"><span>
-            <i class="fa fa-tachometer" aria-hidden="true"></i> View Progress Report</span>
-            </a>
-        </li>
+            
+            {% for child in new_list %}
+                {% for key, value in child.items() %}
+                    <ul>
+                        <li>
+                            {{key.first_name}} {{key.last_name}}
+                        </li>
+
+                        <ul>                             
+                            {% for key2, val in value.items() %}
+                                <li>
+                                    {{key2.first_name}} {{key2.last_name}} : {{val.title}}
+                                </li>
+
+                            {% endfor %}
+                        </ul>
+                    </ul>
+                {% endfor %}
+            {% endfor %}
+
         {% endif %}
-                    
-        <li>
-            <button class="button" style="vertical-align:middle"><span> 
-            <i class="fa fa-envelope" aria-hidden="true"></i> My Messages</span>
-            </button>
-        </li>
-    </ul>
+        <hr>
+        <p>some werid text</p>    
+        
+        <hr/>
+        <h3>Test</h3>
+        <p>Lorem ipsum...</p>
+    </div>
 </div>
 
-            <div class="col-sm-8 text-left"> 
-                <div>
-                    <h2>Welcome, {{current_user.first_name}} {{current_user.last_name}}!</h2>
-                </div>
-                
-                {% if current_user.role_id == 2 %}
-
-                    <h3>Courses I am tutoring: </h3>
-
-                    <ul>
-                        {% for course in teacher_courses %}
-                            <li>
-                                <a href="{{url_for('courses.show', course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
-                                
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                {% elif current_user.role_id == 1 %}
-                    <h3>Courses I am enrolled in: </h3>
-
-                    <ul>
-                        {% for course in student_courses %}
-                            <li>
-                                <a href="{{url_for('courses.show',course_title=course.title, user_id=current_user.id)}}">{{course.title}}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-
-                {% else %}
-                    <h3>List of Child</h3>
-                    {% for child in child_info %}
-                        <ul>
-                            <li>
-                                {{child.first_name}} {{child.last_name}}
-                            </li>
-
-                            <ul>
-                                {% for info in course_teacher %}
-                                    {% for details in info %}
-                                        <li>
-                                            {{details.first_name}} {{details.last_name}} : {{course_teacher[details].title}}
-                                        </li>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </ul>
-                    {% endfor %}
-
-                {% endif %}
-                <hr>
-                <p>some werid text</p>    
-                
-                <hr/>
-                <h3>Test</h3>
-                <p>Lorem ipsum...</p>
-            </div>
-        </div>
-    </div>
     
 
 {% endblock %}

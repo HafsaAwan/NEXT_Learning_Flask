@@ -72,6 +72,7 @@ def show(username):
     for info in child_parent:
         for child in User.select().where(User.id == info.student_id):
             child_info.append(child)
+            print(child.username)
 
     child_course = []
     course_info = []
@@ -79,26 +80,55 @@ def show(username):
 
     # get all courses enrolled by the child respective to the current guardian
     for info in child_info:
+        child_course_info = []
         for course in StudentCourse.select().where(StudentCourse.student_id == info.id):
-            child_course.append(course)
+            child_course_info.append(course)
+
+        child_course.append(child_course_info)
+        
+    print(child_course)
+        
 
     # get courses details enrolled by the child respective to the current guardian
     for info in child_course:
-        for details in Course.select().where(Course.id == info.course_name_id):
-            course_info.append(details)
+        course_child_details = []
+        for course in info:
+            for details in Course.select().where(Course.id == course.course_name_id):
+                course_child_details.append(details)
+
+        course_info.append(course_child_details)
+    
+    print(course_info)
 
     # get teacher details respective to courses enrolled by child respective to the current guardian
+    dict_list = []
     for info in course_info:
-        for teacher in User.select().where(User.id == info.teacher_id):
-            teacher_info.append(teacher)
+        teacher_course_dict = {}
+        for course in info:
+            teacher_details = User.get_or_none(User.id == course.teacher_id)
+            print(teacher_details.username)
 
-    # course_teacher = {teacher_info[i].first_name + " " + teacher_info[i].last_name: course_info[i].title for i in range(len(teacher_info))}
-    course_teacher = dict(zip(teacher_info, course_info)) 
-    print(str(course_teacher))
+            teacher_course_dict[teacher_details] = course
+
+        dict_list.append(teacher_course_dict)
     
+    print(dict_list)
+
+    new_list = []
+    i = len(child_info)
+    
+    for j in range(0,i):
+        child_course_teacher = {}
+        key = child_info[j]
+        value = dict_list[j]
+        child_course_teacher[key] = value
+        print("child_courses_teacher: ", child_course_teacher)
+
+        new_list.append(child_course_teacher)
+
 
     if user:
-        return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses, child_info=child_info, course_teacher=course_teacher)
+        return render_template("users/show.html", user=user, student_courses=student_courses, teacher_courses=teacher_courses, child_info=child_info, new_list=new_list)
     else:
         flash(f"No {username} user found.", "danger" )
         return redirect(url_for('home'))
