@@ -233,6 +233,12 @@ def register(id):
         return redirect(url_for('users.show', username=current_user.username))
 
 
+@users_blueprint.route('/<id>/summary', methods=['GET'])
+@login_required
+def report(id):
+    user = User.get_or_none(User.id == id)
+    return render_template('progress_report.html', user=user)
+
         
  
     

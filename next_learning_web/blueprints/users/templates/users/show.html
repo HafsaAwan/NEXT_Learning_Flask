@@ -184,8 +184,8 @@
             {% if current_user.role.role == "Student" %}
 
             <li>
-                <a href="#">
-                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades
+                <a class="button" style="vertical-align:middle" href="{{ url_for('users.report', id=current_user.id) }}"><span>
+                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades</span>
                 </a>
             </li>
 
@@ -226,7 +226,6 @@
                 </div>
             </div>
                                         
-            <a class="nav-item nav-link " href="#">View Progress Report</a>
 
             {% endif %}
                         
@@ -275,7 +274,7 @@
                 {% for key, value in child.items() %}
                     <ul>
                         <li>
-                            {{key.first_name}} {{key.last_name}}
+                            <a href="{{ url_for('users.report', id=current_user.id) }}">{{key.first_name}} {{key.last_name}}</a>
                         </li>
 
                         <ul>                             
