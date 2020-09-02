@@ -108,6 +108,10 @@
   width: 18rem;
 }
 
+.lead {
+  font-size: px;
+}
+
 footer {
     color: white;
 }
@@ -153,48 +157,43 @@ footer a{
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron" style="background: none;">
-  
-    <h1 class="display-4">NEXT LEARNING</h1>
-    <p class="lead">Enriched remote learning experience</p>
-    <hr class="my-4">
-
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="#" role="button">About Us</a>
-    </p>
-  </div>
+<div class="jumbotron" style="background: none;font-family: 'Bebas Neue', cursive; color: white;">
+    <h1 class="display-4" style="color: white;font-family: 'Bebas Neue', cursive; font-size: 120px;">NEXT LEARNING</h1>
+    <hr class="my-4" style="border:none; height: 10px;">
   <div id="container">
-    Transforming 
-    <div id=flip >
-      <div><div>Classrooms</div></div>
-      <div><div>Lifestyle</div></div>
-      <div><div>Everything</div></div>
-    </div>
-    In Education
+      Transforming 
+      <div id=flip >
+        <div><div>Classrooms</div></div>
+        <div><div>Lifestyle</div></div>
+        <div><div>Everything</div></div>
+      </div>
+      In Education
   </div>
+  <a type="button" class="btn btn-outline-light btn-lg" style="transform: translateY(-70px); font-size: 25x;" href="{{ url_for('teaminfo')}}">About Us</a>
+</div>
 
-<div class="grid-container fade-in" style="margin-top: 50px;">
-  <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+
+<div class="grid-container fade-in" style="margin-top: 200px;">
+  <div class="card">
     <img src="https://image.flaticon.com/icons/svg/2883/2883939.svg" alt="Avatar" style="width:100%">
         <h4><b>Certified Teachers</b></h4>
         <div class="detail">Our educators are globally certified professionals in supporting the academic achievement of our students. Every Next Learning educators must be certified to teach in our school.</div>
   </div>
-  <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+  <div class="card">
     <img src="https://image.flaticon.com/icons/svg/524/524569.svg" alt="Avatar" style="width:100%">
       <div class="container">
-        <h4><b>Special Education</b></h4>
-        <div class="detail">Next Learning is tailored to meet the needs of students with disabilities. The services and supports one child receives may be very different from what another child receives. It’s all about individualization.</div>
+        <h4><b>Guardian Features</b></h4>
+        <div class="detail">Student's activities and work progress can be monitored through the classroom sessions and in-built features to provide improved security assurance for guardians</div>
       </div>
   </div>
-  <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+  <div class="card">
     <img src="https://image.flaticon.com/icons/svg/3100/3100752.svg" alt="Avatar" style="width:100%">
       <div class="container">
         <h4><b>Classroom Experience</b></h4>
         <div class="detail">The course materials and activities may be accessed from any computer whilst incorperating the ideal values of an "online physical classroom" environment.</div>
       </div>
   </div>
-  <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+  <div class="card">
     <img src="https://image.flaticon.com/icons/svg/3329/3329494.svg" alt="Avatar" style="width:100%">
     <div class="container">
       <h4><b>Personal Guidance</b></h4>

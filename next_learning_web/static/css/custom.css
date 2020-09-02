@@ -7,7 +7,10 @@ body {
 
 footer {
   font-size: 11px;
+<<<<<<< HEAD
   /* position: fixed; */
+=======
+>>>>>>> 7fbc07b85da91a3c22fdddde2a36e75141eb4fb5
   bottom: 10px;
   left: 0;
   right: 0;
@@ -52,12 +55,12 @@ footer a {
   transform: translate(0, -100%);
 }
 
-#homepage-button{
+/* #homepage-button{
   position: relative;
   left: 65%;
   right: 35%;
   transform: translateY(100px);
-}
+} */
 
 .grid-container {
   display: grid;

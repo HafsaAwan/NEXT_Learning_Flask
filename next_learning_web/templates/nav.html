@@ -26,7 +26,7 @@
                             <a class="dropdown-item" href="{{url_for('users.show',username=current_user.username)}}">My Profile</a>
                             
                             <a class="dropdown-item" href="{{url_for('users.edit', id=current_user.id) }}">
-                                Setting
+                                Settings
                             </a>
 
                         </div>
@@ -44,11 +44,11 @@
                 </li>
             {% else %}
 
-                <li class="navbar-nav">
-                    <a class="btn btn-outline-light" href="{{url_for('sessions.new')}}">Sign In</a>
+                <li class="navbar-nav" style="margin: 10px;">
+                    <a class="btn btn-dark" href="{{url_for('sessions.new')}}">Sign In</a>
                 </li>
-                <li class="navbar-nav">
-                    <a class="btn btn-outline-light" href="{{url_for('users.new')}}">Sign Up</a>
+                <li class="navbar-nav"style="margin: 10px;">
+                    <a class="btn btn-dark" href="{{url_for('users.new')}}">Sign Up</a>
                 </li>
             
             

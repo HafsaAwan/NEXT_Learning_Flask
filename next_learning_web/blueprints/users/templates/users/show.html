@@ -123,6 +123,7 @@
   opacity: 1;
   right: 0;
 }  
+<<<<<<< HEAD
 /* NEW CONTENT LAYOUT */
 
 body{
@@ -236,6 +237,9 @@ body{
   font-weight: 500;
   color: #999999;
 }
+=======
+
+>>>>>>> 7fbc07b85da91a3c22fdddde2a36e75141eb4fb5
 
     </style>
 {% endblock %}
@@ -252,7 +256,7 @@ body{
         <ul class="sidebar-navigation">
             <li>
                 <a class="button" style="vertical-align:middle" href="{{ url_for('users.edit', id=current_user.id) }}"><span>
-                <i class="fa fa-university" aria-hidden="true"></i> Edit Profile</span>
+                <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile</span>
                 </a>
             </li>
             <hr>
@@ -260,7 +264,7 @@ body{
 
             <li>
                 <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
-                <i class="fa fa-university" aria-hidden="true"></i> Create a course</span>
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i> Create a course</span>
                 </button>
             </li>
             <li>
@@ -305,8 +309,8 @@ body{
             {% if current_user.role.role == "Student" %}
 
             <li>
-                <a href="#">
-                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades
+                <a class="button" style="vertical-align:middle" href="{{ url_for('users.report', id=current_user.id) }}"><span>
+                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades</span>
                 </a>
             </li>
 
@@ -354,7 +358,6 @@ body{
                 </div>
             </div>
                                         
-            <a class="nav-item nav-link " href="#">View Progress Report</a>
 
             {% endif %}
                         
@@ -439,7 +442,7 @@ body{
                                     {% for key, value in child.items() %}
                                         <ul>
                                             <li>
-                                                Child: {{key.first_name}} {{key.last_name}}
+                                                Child: <a href="{{ url_for('users.report', id=current_user.id) }}">{{key.first_name}} {{key.last_name}}</a>
                                             </li>
 
                                             <ul>

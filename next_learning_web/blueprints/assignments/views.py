@@ -57,10 +57,6 @@ def upload(user_id, course_title, post_id):
             new_assignment = Assignment(title=title, info_id=info.id, file_path=file_path, post_id=post.id)
             
             if new_assignment.save():
-                assignments = []
-                for assignment in Assignment.select():
-                    assignments.append(assignment)
-
                 flash("Successfully uploaded!","success")
                 return redirect(url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = post.id))  # then redirect to profile page
             else:
@@ -75,20 +71,25 @@ def upload(user_id, course_title, post_id):
         return redirect(url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = post.id))
 
 
-@assignments_blueprint.route('/<course_title>/submissions', methods=['GET'])
-def box(course_name, user_id, post_id):
-    course = Course.get_or_none(Course.title == course_title)
-    info = StudentCourse.get_or_none(StudentCourse.student_id == current_user.id, StudentCourse.course_name_id == course.id)
-
-    assignments = []
-
-    for assignment in Assignment.select().where(Assignment.info_id == info.id):
-        assignments.append(assignment)
-
-    return render_template('assignments/box.html', assignments=assignments, course=course)
-
-
-@assignments_blueprint.route('/<course_title>/submissions', methods=['POST'])
+@assignments_blueprint.route('/<course_title>/<user_id>/<post_id>/submissions', methods=['POST'])
 def check(course_title, user_id, post_id):
-    pass
+    current_course = Course.get_or_none(Course.title == course_title)
+    current_info = StudentCourse.get_or_none(StudentCourse.course_name_id == current_course.id)
+    current_assignment = Assignment.get_or_none(Assignment.post_id == post_id, Assignment.info_id == current_info.id)
+
+    params = request.form
+
+    current_assignment.title = current_assignment.title
+    current_assignment.info_id = current_assignment.info_id
+    current_assignment.file_path = current_assignment.file_path
+    current_assignment.post_id = current_assignment.post_id
+
+    current_assignment.grade_id = params.get('grade')
+
+    if current_assignment.save():
+        flash("Successfully graded the student!")
+        return redirect(url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = post_id))
+    else:
+        flash("Failed to grade the student!")
+        return redirect(url_for('posts.show', course_name=course_title, user_id=current_user.id, post_id = post_id))
     
