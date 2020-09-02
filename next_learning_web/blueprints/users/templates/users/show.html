@@ -122,6 +122,8 @@
   opacity: 1;
   right: 0;
 }  
+
+
     </style>
 {% endblock %}
 {% block content %}
@@ -136,7 +138,7 @@
         <ul class="sidebar-navigation">
             <li>
                 <a class="button" style="vertical-align:middle" href="{{ url_for('users.edit', id=current_user.id) }}"><span>
-                <i class="fa fa-university" aria-hidden="true"></i> Edit Profile</span>
+                <i class="fa fa-pencil" aria-hidden="true"></i> Edit Profile</span>
                 </a>
             </li>
             <hr>
@@ -144,7 +146,7 @@
 
             <li>
                 <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#courseModal"><span>
-                <i class="fa fa-university" aria-hidden="true"></i> Create a course</span>
+                <i class="fa fa-graduation-cap" aria-hidden="true"></i> Create a course</span>
                 </button>
             </li>
 
@@ -184,8 +186,8 @@
             {% if current_user.role.role == "Student" %}
 
             <li>
-                <a href="#">
-                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades
+                <a class="button" style="vertical-align:middle" href="#"><span>
+                <i class="fa fa-trophy" aria-hidden="true"></i> My Grades</span>
                 </a>
             </li>
 
@@ -193,8 +195,8 @@
 
             {% if current_user.role.role == "Guardian" %}
             <li>
-                <button class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal">
-                <i class="fa fa-tachometer" aria-hidden="true"></i> Add Your Child</button>
+                <a class="button" style="vertical-align:middle" data-toggle="modal" data-target="#childListModal"><span>
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Add Your Child</span>
             </li>
 
             <div class="modal fade" id="childListModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -226,7 +228,11 @@
                 </div>
             </div>
                                         
-            <a class="nav-item nav-link " href="#">View Progress Report</a>
+            <li>
+                <a class="button" style="vertical-align:middle" href="#"><span>
+                <i class="fa fa-tachometer" aria-hidden="true"></i>View Progress Report</span>
+                </a>
+            </li>
 
             {% endif %}
                         
