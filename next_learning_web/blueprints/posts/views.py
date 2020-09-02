@@ -38,7 +38,7 @@ def create(course_name,user_id,post_id):
     else:
         if "assignment" in request.files:
             file = request.files["assignment"]
-            file.filename = secure_filename(file.filename)
+            # file.filename = secure_filename(file.filename)
             file_path = upload_file_to_s3(file, user.username)
 
             content = request.form.get("post_content")

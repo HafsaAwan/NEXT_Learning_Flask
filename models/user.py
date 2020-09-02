@@ -24,7 +24,7 @@ class User(UserMixin, BaseModel):
             return app.config.get("S3_LOCATION") + self.image_path
         else:
             from app import app
-            return app.config.get("S3_LOCATION") + "default-avatar.png"
+            return app.config.get("S3_LOCATION") + "new_default_picture.png"
 
     def validate(self):
         # Email should be unique
